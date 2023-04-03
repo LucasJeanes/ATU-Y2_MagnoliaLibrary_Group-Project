@@ -1,0 +1,47 @@
+CREATE TABLE person(
+id INT NOT NULL AUTO_INCREMENT,
+name VARCHAR(50) NOT NULL,
+age INT NOT NULL,
+email VARCHAR(50) NOT NULL,
+PRIMARY KEY(id)
+);
+
+CREATE TABLE address (
+id INT NOT NULL AUTO_INCREMENT,
+person_id INT NOT NULL,
+street VARCHAR(50) NOT NULL,
+city VARCHAR(50) NOT NULL,
+county VARCHAR(50) NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (person_id) REFERENCES person(id)
+);
+
+INSERT INTO person (name, age, email) VALUES
+('John', 25, 'john@email.com'),
+('Jane', 30, 'jane@email.com'),
+('bob', 45, 'bob@email.com'),
+('Alice', 35, 'alice@email.com'),
+('mike', 20, 'mike@email.com'),
+('Sara', 50, 'mike@email.com'),
+('tom', 28, 'tom@email.com'),
+('Emily', 42, 'emily@email.com'),
+('David', 39, 'david@email.com'),
+('Jessica', 27, 'jessica@email.com');
+
+INSERT INTO address (person_id, street, city, county) VALUES
+(1, '123 main St', 'Anytown', 'Anycounty'),
+(2, '129 main St', 'Bnytown', 'Bnycounty'),
+(3, '189 main St', 'Cnytown', 'Cnycounty'),
+(4, '154 main St', 'Dnytown', 'Dnycounty'),
+(5, '111 main St', 'Enytown', 'Enycounty'),
+(6, '161 main St', 'Fnytown', 'Fnycounty');
+
+UPDATE person SET name = 'paul', age = 25, email = 'paul@atu.ie' WHERE email = 'john@email.com'; 
+
+SELECT * FROM person p JOIN address a WHERE p.id = a.person_id;
+
+UPDATE address
+SET street = 'college', city = 'gort', county = 'galway'
+WHERE person_id = (SELECT id FROM person WHERE email = 'Paul@atu.ie');
+
+START TRANSACTION;
