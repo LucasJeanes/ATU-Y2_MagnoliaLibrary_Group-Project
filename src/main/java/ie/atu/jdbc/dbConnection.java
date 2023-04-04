@@ -35,16 +35,33 @@ public class dbConnection {
 
 //      This is an example from the online guide I linked to insert data into a table that it creates.
 //      LINK TO THE GUIDE >>>>>> https://learn.microsoft.com/en-us/azure/azure-sql/database/connect-query-java?view=azuresql
-        /*
+
 		Todo todo = new Todo(1L, "configuration", "congratulations, you have set up JDBC correctly!", true);
         insertData(todo, connection);
+
+        /*
         todo = readData(connection);
         todo.setDetails("congratulations, you have updated data!");
         updateData(todo, connection);
         deleteData(todo, connection);
 */
 
+
         log.info("Closing database connection");
         connection.close();
+
+
     }
+    private static void insertData(Todo todo, Connection connection) throws SQLException {
+        log.info("Insert data");
+        PreparedStatement insertStatement = connection
+                .prepareStatement("INSERT INTO todo (id, description, details, done) VALUES (?, ?, ?, ?);");
+
+        insertStatement.setLong(1, todo.getId());
+        insertStatement.setString(2, todo.getDescription());
+        insertStatement.setString(3, todo.getDetails());
+        insertStatement.setBoolean(4, todo.isDone());
+        insertStatement.executeUpdate();
+    }
+
 }
