@@ -4,13 +4,13 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Properties;
+import java.sql.*;
+import java.util.*;
 
 public class dbConnection {
     //later we will look at storing this type of data in a better location like a properties file
     static Properties properties = new Properties();
-    private static final String URL = properties.getProperty("url");
+    private static final String URL = "jdbc:sqlserver://atu-magnolia.database.windows.net:1433;database=MagnoliaLibrary;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30";
     private static final String USERNAME = properties.getProperty("user");
     private static final String PASSWORD = properties.getProperty("password");
     private static final DataSource dataSource;
