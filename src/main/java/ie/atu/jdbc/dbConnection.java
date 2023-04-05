@@ -1,38 +1,33 @@
 package ie.atu.jdbc;
 
-import java.sql.*;
-import java.util.*;
-import java.util.logging.Logger;
+import com.mysql.cj.jdbc.MysqlDataSource;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Properties;
 
 public class dbConnection {
+    //later we will look at storing this type of data in a better location like a properties file
+    static Properties properties = new Properties();
+    private static final String URL = properties.getProperty("url");
+    private static final String USERNAME = properties.getProperty("user");
+    private static final String PASSWORD = properties.getProperty("password");
+    private static final DataSource dataSource;
 
-    private static final Logger log;
-
+    //notice the static has no name?
+    //The static block does not have a method name because it is a special block of code that
+    // is executed when the class is loaded into memory. It is used to initialize static variables and perform
+    // any other one-time setup that the class may require.
     static {
-        System.setProperty("java.util.logging.SimpleFormatter.format", "[%4$-7s] %5$s %n");
-        log =Logger.getLogger(dbConnection.class.getName());
+        MysqlDataSource mysqlDataSource = new MysqlDataSource();
+        mysqlDataSource.setURL(URL);
+        mysqlDataSource.setUser(USERNAME);
+        mysqlDataSource.setPassword(PASSWORD);
+        dataSource = mysqlDataSource;
     }
-//  THIS 'properties' function retrieves login details & URL for database connection
-    public static void main(String[] args) throws Exception {
-        log.info("Loading application properties");
-        Properties properties = new Properties();
-        properties.load(dbConnection.class.getClassLoader().getResourceAsStream("application.properties"));
 
-        log.info("Connecting to the database");
-
-//THIS LINE OF CODE TO CONNECT TO DATABASE!!!!!
-        Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);
-//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-        log.info("Database connection test: " + connection.getCatalog());
-
-        log.info("Create database schema");
-        Scanner scanner = new Scanner(dbConnection.class.getClassLoader().getResourceAsStream("schema.sql"));
-        Statement statement = connection.createStatement();
-        while (scanner.hasNextLine()) {
-            statement.execute(scanner.nextLine());
-        }
-        log.info("Closing database connection");
-        connection.close();
+    public static Connection getConnection() throws SQLException {
+        return dataSource.getConnection();
     }
 }
