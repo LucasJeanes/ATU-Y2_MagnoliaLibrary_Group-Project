@@ -15,21 +15,31 @@ public class dbInsert {
         System.out.println("Connecting to the database");
         Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
+        public static String insertTable = "Boob";
+        public static String insertColumn = "Boob2";
+        public static String insertNewValue = "Boob3";
+        public static String refID = "Boob4";
+        public static String refValue = "Boob5";
+        
+        String selectSQL = "INSERT INTO ?" + "VALUES ?";
+        
         try {
 
             // Insert a new record into the "users" table
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO Books (name, author, publication, rented) VALUES (?, ?,?,?)");
-            stmt.setString(1, "templateBook");
-            stmt.setString(2, "Paul");
-            stmt.setString(3, "1968");
-            stmt.setString(4, "0");
+            PreparedStatement insertStatement = connection.prepareStatement(selectSQL);
+            insertStatement.setString(1,insertTable);
+            insertStatement.setString(2,insertColumn);
+            insertStatement.setString(3,insertNewValue);
+            insertStatement.setString(4,refID);
+            insertStatement.setString(5,refValue);
             stmt.executeUpdate();
 
-            System.out.println("Insert completed successfully.");
+            int inserted = (statement.executeUpdate(insertStatement.toString()));
+            System.out.println("The following has successfully been inserted: " + inserted);
         } catch (SQLException ex) {
 
             System.out.println("Record insert failed.");
-            ex.printStackTrace();
+            e.printStackTrace();
         }
         // Close the connection
         connection.close();
