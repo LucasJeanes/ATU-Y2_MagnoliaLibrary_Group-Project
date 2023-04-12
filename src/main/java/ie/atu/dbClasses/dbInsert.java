@@ -15,26 +15,27 @@ public class dbInsert {
         System.out.println("Connecting to the database");
         Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
-        String insertTable = "Boob";
-        String insertColumn = "Boob2";
-        String insertNewValue = "Boob3";
-        String refID = "Boob4";
-        String refValue = "Boob5";
+//Test insert - to be replaced with table specific info inherited from class(ie. books, music etc.)
+        String insertTable = "Books";
+        String insertName = "BookTest";
+        String insertAuthor = "AuthorName";
+        String refPublic = "1996";
+        String refRented = "0";
         
-        String selectSQL = "INSERT INTO ?" + "VALUES ?";
+        String selectSQL = "INSERT INTO ? VALUES (?, ?, ?, ?)";
         
         try {
 
             // Insert a new record into the "users" table
             PreparedStatement insertStatement = connection.prepareStatement(selectSQL);
-            insertStatement.setString(1,insertTable);
-            insertStatement.setString(2,insertColumn);
-            insertStatement.setString(3,insertNewValue);
-            insertStatement.setString(4,refID);
-            insertStatement.setString(5,refValue);
-            insertStatement.executeUpdate();
+            //insertStatement.setString(1,insertTable);
+            insertStatement.setString(1,insertName);
+            insertStatement.setString(2,insertAuthor);
+            insertStatement.setString(3,refPublic);
+            insertStatement.setString(4,refRented);
+            //int row = insertStatement.executeUpdate();
 
-            int inserted = (insertStatement.executeUpdate(insertStatement.toString()));
+            int inserted = (insertStatement.executeUpdate());
             System.out.println("The following has successfully been inserted: " + inserted);
         } catch (SQLException ex) {
 
