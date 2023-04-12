@@ -10,10 +10,7 @@ public class TestdbConnection {
         System.out.println("Loading application properties");
         Properties properties = new Properties();
         properties.load(TestdbConnection.class.getClassLoader().getResourceAsStream("application.properties"));
-
         System.out.println("Connecting to the database");
-
-//THIS LINE OF CODE TO CONNECT TO DATABASE!!!!!
         Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

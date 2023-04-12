@@ -1,19 +1,16 @@
 package ie.atu.jdbc;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
-
+import java.sql.*;
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Properties;
+import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class dbConnection {
     //later we will look at storing this type of data in a better location like a properties file
-    static Properties properties = new Properties();
-    private static final String URL = properties.getProperty("url");
-    private static final String USERNAME = properties.getProperty("user");
-    private static final String PASSWORD = properties.getProperty("password");
-    private static final DataSource dataSource;
+    private static String url = dbProperties.getUrl();
+    private static String user = dbProperties.getUsername();
+    private static String password = dbProperties.getPassword();
+    private static DataSource dataSource;
+
 
     //notice the static has no name?
     //The static block does not have a method name because it is a special block of code that
@@ -21,9 +18,9 @@ public class dbConnection {
     // any other one-time setup that the class may require.
     static {
         MysqlDataSource mysqlDataSource = new MysqlDataSource();
-        mysqlDataSource.setURL(URL);
-        mysqlDataSource.setUser(USERNAME);
-        mysqlDataSource.setPassword(PASSWORD);
+        mysqlDataSource.setURL(url);
+        mysqlDataSource.setUser(user);
+        mysqlDataSource.setPassword(password);
         dataSource = mysqlDataSource;
     }
 
