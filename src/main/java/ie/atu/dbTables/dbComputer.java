@@ -1,5 +1,7 @@
 package ie.atu.dbTables;
 
+import com.microsoft.sqlserver.jdbc.ISQLServerConnection;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,12 +35,12 @@ public class dbComputer {
         String insertMemory = "16Gig / 1TB";
         String insertPrice = "1599";
         String refRented = "0";
-        ///String selectSQL = "INSERT INTO ? VALUES (?, ?, ?, ?)";
+        String addComp = "INSERT INTO Computer VALUES (Dell-meg,DELL, Core i10, 8Gig/2TB, 2000,0)";
 
         try {
-
+            ////String selectSQL = "INSERT INTO ? VALUES (?, ?, ?, ?)";
             // Insert a new record into the "users" table
-            PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO ? VALUES (?, ?, ?, ?)";);
+            PreparedStatement insertStatement = connection.prepareStatement(addComp);
             //insertStatement.setString(1,insertTable);
             insertStatement.setString(1,insertName);
             insertStatement.setString(2,insertBrand);
@@ -89,8 +91,9 @@ public class dbComputer {
 
         try
         {
-            //////String updateSQL = "UPDATE Books SET name = ? WHERE " + refColumn + " = ?";
-            PreparedStatement updateStatement = connection.prepareStatement("UPDATE Books SET name = ? WHERE " + refColumn + " = ?");
+            String updateSQL = "UPDATE Books SET name = ? WHERE " + refColumn + " = ?";
+            ISQLServerConnection connection = null;
+            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
 
             //updateStatement.setString(1,TableName);
 
