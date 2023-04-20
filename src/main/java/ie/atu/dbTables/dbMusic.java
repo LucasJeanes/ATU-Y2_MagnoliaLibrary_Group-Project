@@ -47,6 +47,8 @@ public class dbMusic {
         this.publication = publication;
         this.rented = rented;
     }
+
+    //For Adding new music
     public void addMusic(){
         try {
 
@@ -67,6 +69,8 @@ public class dbMusic {
             ex.printStackTrace();
         }
     }
+
+    //For Updating Existing Data
     public void updateMusic(){
         try
         {
@@ -89,6 +93,7 @@ public class dbMusic {
         }
     }
 
+    //For Deleting an Existing Data
     public void deleteMusic(){
         try (Statement statement = connection.createStatement()) {
             PreparedStatement deleteStatement = connection.prepareStatement ("DELETE FROM ? WHERE ? = ?");
