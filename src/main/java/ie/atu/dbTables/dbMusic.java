@@ -18,10 +18,9 @@ public class dbMusic {
     String refRented = "0";
 
     //For Updates
-    String TableName = "Books";
-    String SetColumnName = "name";
-    String NewName = "";
-    String refColumn = "book_id";
+    String columnToChange = "";
+    String newInfo = "";
+    String refColumn = "";
     int IDNumber = 16;
 
     //For Deletes
@@ -74,14 +73,14 @@ public class dbMusic {
     public void updateMusic(){
         try
         {
-            String updateSQL = "UPDATE ? SET name = ? WHERE ? = ?";
+            String updateSQL = "UPDATE Music SET" + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
 
-            updateStatement.setString(1,TableName);
+            /*updateStatement.setString(1,TableName);
             updateStatement.setString(2,SetColumnName);
             updateStatement.setString(3,NewName);
             updateStatement.setString(4,refColumn);
-            updateStatement.setInt(5,IDNumber);
+            updateStatement.setInt(5,IDNumber);*/
 
             int rowsUpdated = updateStatement.executeUpdate();
             System.out.println("Rows updated: " + rowsUpdated);
