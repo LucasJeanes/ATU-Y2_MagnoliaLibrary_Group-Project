@@ -25,13 +25,11 @@ public class dbDelete {
 
             deleteStatement.setString(3,refID);
 
-            int rowsDeleted = (statement.executeUpdate(deleteStatement.toString()));
+            int rowsDeleted = (deleteStatement.executeUpdate(deleteStatement.toString()));
             System.out.println("Rows deleted: " + rowsDeleted);
         } catch (SQLException e) {
             System.out.println("Rows failed delete");
             e.printStackTrace();
         }
     }
-
-
 }

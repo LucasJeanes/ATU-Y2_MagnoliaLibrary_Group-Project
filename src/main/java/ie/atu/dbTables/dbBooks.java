@@ -1,5 +1,10 @@
 package ie.atu.dbTables;
 
+import ie.atu.dbClasses.dbUpdate;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class dbBooks {
     public String bookColumns = "name,author,publication,rented";
     private String name;
@@ -16,14 +21,22 @@ public class dbBooks {
         this.publication = publication;
         this.rented = rented;
     }
+    public void editBook(String columnToChange, String newInfo, String refColumn, String refID) throws SQLException {
+        String updateSQL = "UPDATE Books SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
+        PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
+
+        int rowsUpdated = updateStatement.executeUpdate();
+        System.out.println("Rows updated: " + rowsUpdated);
+    }
+
     public void addBook(String name, String author, String publication, boolean rented) {
-        //USE UPDATE CLASS TO ADD NEW BOOK TO TABLE
+
     }
     public void deleteBook() {
         //DELETE BOOK FROM TABLE
     }
-    public void checkout() {
-        //SET BOOK TO RENTED ( + assign to user?)
+    public void checkout(String columnToChange,String newInfo,String refColumn,String refID) { //checkout book for rent
+        String updateSQL = "UPDATE Books SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
     }
 
 
