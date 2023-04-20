@@ -1,6 +1,5 @@
 package ie.atu.dbClasses;
 import ie.atu.jdbc.TestdbConnection;
-import ie.atu.jdbc.dbConnection;
 
 import java.io.IOException;
 import java.sql.*;
