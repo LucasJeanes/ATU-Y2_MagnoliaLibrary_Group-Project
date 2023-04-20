@@ -36,7 +36,6 @@ public class dbBooks {
         //DELETE BOOK FROM TABLE
     }
     public void checkout(String columnToChange,String newInfo,String refColumn,String refID) { //checkout book for rent
-
         String updateSQL = "UPDATE Books SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
     }
 
