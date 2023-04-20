@@ -18,7 +18,7 @@ public class dbDelete {
 
 
 
-        try (Statement statement = connection.createStatement()) {
+        try {
             PreparedStatement deleteStatement = connection.prepareStatement ("DELETE FROM ? WHERE ? = ?");
             deleteStatement.setString(1,deleteTable);
             deleteStatement.setString(2,deleteColumn);
