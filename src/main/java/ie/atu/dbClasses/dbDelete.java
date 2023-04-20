@@ -9,25 +9,23 @@ import java.sql.Statement;
 
 public class dbDelete {
 
-    public static String deleteTable = "Boob";
-    public static String deleteColumn = "Boob2";
+    public static String deleteTable = "Boo";
+    public static String deleteColumn = "Boo2";
 
-    public static String refID = "Boob4";
-    public static String refValue = "Boob5";
+    public static String refID = "Boo4";
 
     public static void main(String[] args) {
 
 
 
-        try (Connection connection = dbConnection.getConnection();
-             Statement statement = connection.createStatement()) {
-            PreparedStatement updateStatement = connection.prepareStatement ("UPDATE ? SET ? = ? WHERE ? = ?");
-            updateStatement.setString(1,deleteTable);
-            updateStatement.setString(2,deleteColumn);
+        try (Statement statement = connection.createStatement()) {
+            PreparedStatement deleteStatement = connection.prepareStatement ("DELETE FROM ? WHERE ? = ?");
+            deleteStatement.setString(1,deleteTable);
+            deleteStatement.setString(2,deleteColumn);
 
-            updateStatement.setString(4,refID);
-            updateStatement.setString(5,refValue);
-            int rowsDeleted = (statement.executeUpdate(updateStatement.toString()));
+            deleteStatement.setString(3,refID);
+
+            int rowsDeleted = (statement.executeUpdate(deleteStatement.toString()));
             System.out.println("Rows deleted: " + rowsDeleted);
         } catch (SQLException e) {
             System.out.println("Rows failed delete");
