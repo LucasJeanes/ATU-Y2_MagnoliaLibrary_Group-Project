@@ -1,8 +1,5 @@
 package ie.atu.dbClasses;
 
-import ie.atu.jdbc.dbConnection;
-
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -19,7 +16,7 @@ public class dbDelete {
 
 
 
-        try (Connection connection = dbConnection.getConnection();
+        try (//Connect to database
              Statement statement = connection.createStatement()) {
             PreparedStatement updateStatement = connection.prepareStatement ("UPDATE ? SET ? = ? WHERE ? = ?");
             updateStatement.setString(1,deleteTable);
@@ -34,6 +31,4 @@ public class dbDelete {
             e.printStackTrace();
         }
     }
-
-
 }
