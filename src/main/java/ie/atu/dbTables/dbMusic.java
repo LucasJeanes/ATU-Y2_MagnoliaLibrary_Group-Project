@@ -34,6 +34,11 @@ public class dbMusic {
     private String artist;
     private int publication;
     private boolean rented;
+    private Connection connection;
+
+    public dbMusic(Connection connection) {
+        this.connection = connection;
+    }
 
     public dbMusic() {
 

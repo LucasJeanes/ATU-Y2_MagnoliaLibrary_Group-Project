@@ -2,6 +2,7 @@ package ie.atu.dbTables;
 
 import com.microsoft.sqlserver.jdbc.ISQLServerConnection;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,6 +15,11 @@ public class dbComputer {
     public String memory;
     public String price;
     private boolean rented;
+    private Connection connection;
+
+    public dbComputer(Connection connection) {
+        this.connection = connection;
+    }
 
     public dbComputer(String name, String brand, String details, String memory, String price, boolean rented) {
 
@@ -73,7 +79,7 @@ public class dbComputer {
 
             deleteStatement.setString(3,refID);
 
-            int rowsDeleted = (statement.executeUpdate(deleteStatement.toString()));
+            int rowsDeleted = (deleteStatement.executeUpdate(deleteStatement.toString()));
             System.out.println("Rows deleted: " + rowsDeleted);
         } catch (SQLException e) {
             System.out.println("Rows failed delete");
@@ -82,7 +88,7 @@ public class dbComputer {
 
     }
     /////////Updating tables/////
-    public String UpdateComputer(String name, String brand, String details, String memory, String price, boolean rented){
+    public void updateComputer(String name, String brand, String details, String memory, String price, boolean rented){
         String TableName = "Books";
         String SetColumnName = "name";
         String NewName = "DewansBookLASTONEPLS";
