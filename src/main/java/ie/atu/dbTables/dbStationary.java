@@ -1,9 +1,6 @@
 package ie.atu.dbTables;
-import ie.atu.dbClasses.dbDelete;
-import ie.atu.jdbc.dbConnection;
 
 import java.sql.*;
-import java.util.Properties;
 
 public class dbStationary {
     public static String deleteTable = "Boo";
@@ -29,6 +26,11 @@ public class dbStationary {
     private int price;
     private int user_discount;
     private int stock;
+    private Connection connection;
+
+    public dbStationary(Connection connection) {
+        this.connection = connection;
+    }
 
     public dbStationary(String stationaryColumns, String name, String description, int price, int user_discount, int stock) {
         this.stationaryColumns = stationaryColumns;
@@ -44,9 +46,7 @@ public class dbStationary {
 
     }
 
-    public void updateItem(String name, String description, int price, int user_discount, int stock) throws SQLException {
-      //  Properties properties = new Properties();///////////
-      //  Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);//////////
+    public void updateItem(String name, String description, int price, int user_discount, int stock) {
         try
         {
             String updateSQL = "UPDATE Books SET name = ? WHERE " + refColumn + " = ?";
@@ -68,9 +68,7 @@ public class dbStationary {
         }
     }
 
-    public void deleteItem () throws SQLException {
-        //Properties properties = new Properties();///////////
-       // Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);//////////
+    public void deleteItem () {
         try {
             PreparedStatement deleteStatement = connection.prepareStatement ("DELETE FROM ? WHERE ? = ?");
             deleteStatement.setString(1,deleteTable);
@@ -87,8 +85,6 @@ public class dbStationary {
 
     public void addItem(){
         try {
-          //  Properties properties = new Properties(); /////////
-          //  Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);//////////
             // Insert a new record into the "users" table
             PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO ? VALUES (?, ?, ?, ?)");
             //insertStatement.setString(1,insertTable);

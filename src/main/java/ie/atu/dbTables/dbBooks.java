@@ -2,6 +2,7 @@ package ie.atu.dbTables;
 
 import ie.atu.dbClasses.dbUpdate;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -11,34 +12,83 @@ public class dbBooks {
     private String author;
     private String publication;
     private boolean rented;
+    private Connection connection;
 
     public dbBooks() {
     }
+    public dbBooks(Connection connection) {
 
-    public dbBooks(String name, String author, String publication, boolean rented) {
+    }
+    public dbBooks(Connection connection, String name, String author, String publication, boolean rented) {
+        this.connection = connection;
         this.name = name;
         this.author = author;
         this.publication = publication;
         this.rented = rented;
     }
-    public void editBook(String columnToChange, String newInfo, String refColumn, String refID) throws SQLException {
+    public void editBook(String columnToChange, String newInfo, String refColumn, String refID) {
         String updateSQL = "UPDATE Books SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
-        PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
 
-        int rowsUpdated = updateStatement.executeUpdate();
-        System.out.println("Rows updated: " + rowsUpdated);
+        try {
+            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
+
+            int rowsUpdated = updateStatement.executeUpdate();
+            System.out.println("Rows updated: " + rowsUpdated);
+        } catch (SQLException ex) {
+            System.out.println("[ERROR] Edit book info failed.");
+            ex.printStackTrace();
+        }
     }
 
-    public void addBook(String name, String author, String publication, boolean rented) {
+    public void addBook() {
+        String selectSQL = "INSERT INTO Books VALUES (?, ?, ?, ?)";
 
-    }
-    public void deleteBook() {
-        //DELETE BOOK FROM TABLE
-    }
-    public void checkout(String columnToChange,String newInfo,String refColumn,String refID) { //checkout book for rent
-        String updateSQL = "UPDATE Books SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
-    }
+        try {
+            PreparedStatement insertStatement = connection.prepareStatement(selectSQL);
+            insertStatement.setString(1,name);
+            insertStatement.setString(2,author);
+            insertStatement.setString(3,publication);
+            insertStatement.setBoolean(4,rented);
 
+            int inserted = (insertStatement.executeUpdate());
+            System.out.println("New book has been added: " + inserted);
+            insertStatement.close();
+        } catch (SQLException ex) {
+
+            System.out.println("[ERROR] Adding book to database failed.");
+            ex.printStackTrace();
+        }
+    }
+    public void deleteBook(String refColumn,String refID) {
+        String deleteSQL = "DELETE FROM Books WHERE " + refColumn + " = " + refID;
+
+        try {
+            PreparedStatement deleteStatement = connection.prepareStatement(deleteSQL);
+            //deleteStatement.setString(1,refColumn);
+           // deleteStatement.setString(2,refID);
+            int rowsDeleted = (deleteStatement.executeUpdate());
+            System.out.println("Books deleted: " + rowsDeleted);
+
+        } catch (SQLException e) {
+            System.out.println("[ERROR] Deleting book failed.");
+            e.printStackTrace();
+        }
+    }
+    public void checkout(String refColumn,String refID) { //checkout book for rent
+        //String rentColumn = "rented";
+        //String checkedOut = "1";
+        String updateSQL = "UPDATE Books SET rented = 1 WHERE " + refColumn + " = " + refID;
+
+        try {
+            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
+            int rowsUpdated = updateStatement.executeUpdate();
+            System.out.println("Rows updated: " + rowsUpdated);
+
+        } catch(SQLException ex) {
+            System.out.println("[ERROR] Book checkout failed.");
+            ex.printStackTrace();
+        }
+    }
 
     //GETTERS & SETTERS
     public String getBookColumns() {return bookColumns;}

@@ -1,5 +1,4 @@
 package ie.atu.dbClasses;
-import ie.atu.jdbc.TestdbConnection;
 import ie.atu.jdbc.dbConnection;
 
 import java.io.IOException;
@@ -11,7 +10,7 @@ public class dbInsert {
         //Connection connection = dbConnection.getConnection();
         System.out.println("Loading application properties");
         Properties properties = new Properties();
-        properties.load(TestdbConnection.class.getClassLoader().getResourceAsStream("application.properties"));
+        properties.load(dbConnection.class.getClassLoader().getResourceAsStream("application.properties"));
         System.out.println("Connecting to the database");
         Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
