@@ -9,11 +9,11 @@ import java.sql.Statement;
 
 public class dbComputer {
     public String ComputerColoumn = "name, brand, details, memory, price, rented";
-    public String name;
-    public String brand;
-    public String details;
-    public String memory;
-    public String price;
+    private String name;
+    private String brand;
+    private String details;
+    private String memory;
+    private String price;
     private boolean rented;
     private Connection connection;
 
@@ -33,27 +33,21 @@ public class dbComputer {
 
     /////Inserting new Value
 
-    public void addComputer(String name, String brand, String details, String memory, String price, boolean rented){
-        String insertTable = "Computer";
-        String insertName = "HPMeg9999";
-        String insertBrand = "HP";
-        String insertDetails = "intel Core i9";
-        String insertMemory = "16Gig / 1TB";
-        String insertPrice = "1599";
-        String refRented = "0";
-        String addComp = "INSERT INTO Computer VALUES (Dell-meg,DELL, Core i10, 8Gig/2TB, 2000,0)";
+    public void addComputer(){
+
+        String addComp = "INSERT INTO Computer VALUES (?,?,?,?,?,?)";
 
         try {
             ////String selectSQL = "INSERT INTO ? VALUES (?, ?, ?, ?)";
             // Insert a new record into the "users" table
             PreparedStatement insertStatement = connection.prepareStatement(addComp);
             //insertStatement.setString(1,insertTable);
-            insertStatement.setString(1,insertName);
-            insertStatement.setString(2,insertBrand);
-            insertStatement.setString(3,insertDetails);
-            insertStatement.setString(4,insertMemory);
-            insertStatement.setString(5,insertPrice);
-            insertStatement.setString(6,refRented);
+            insertStatement.setString(1,name);
+            insertStatement.setString(2,brand);
+            insertStatement.setString(3,details);
+            insertStatement.setString(4,memory);
+            insertStatement.setString(5,price);
+            insertStatement.setString(6, String.valueOf(rented));
             //int row = insertStatement.executeUpdate();
 
             int inserted = (insertStatement.executeUpdate());
@@ -67,65 +61,72 @@ public class dbComputer {
     }
     ///////Deleting columns/rows
 
-    public void deleteComputer(){
-        String deleteTable = "Boo";
-        String deleteColumn = "Boo2";
-        String refID = "19";
+    public void deleteComputer(String refColumn,String refID){
+        String deleteComp = "DELETE FROM Computer WHERE " + refColumn + " = " + refID;
 
         try{
-            PreparedStatement deleteStatement = connection.prepareStatement ("DELETE FROM ? WHERE ? = ?");
-            deleteStatement.setString(1,deleteTable);
-            deleteStatement.setString(2,deleteColumn);
+            PreparedStatement deleteStatement = connection.prepareStatement (deleteComp);
+            //deleteStatement.setString(1,deleteTable);
+            //deleteStatement.setString(2,deleteColumn);
 
-            deleteStatement.setString(3,refID);
+            //deleteStatement.setString(3,refID);
 
             int rowsDeleted = (deleteStatement.executeUpdate(deleteStatement.toString()));
-            System.out.println("Rows deleted: " + rowsDeleted);
-        } catch (SQLException e) {
+            System.out.println("Computer removed: " + rowsDeleted);
+        } catch (SQLException e){
             System.out.println("Rows failed delete");
             e.printStackTrace();
         }
 
     }
     /////////Updating tables/////
-    public void updateComputer(String name, String brand, String details, String memory, String price, boolean rented){
-        String TableName = "Books";
-        String SetColumnName = "name";
-        String NewName = "DewansBookLASTONEPLS";
-        String refColumn = "book_id";
-        int IDNumber = 16;
+    public void updateComputer(String columnToChange, String newInfo, String refColumn, String refID){
+        String updateComp = "UPDATE Computer SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
 
         try
         {
-            String updateSQL = "UPDATE Books SET name = ? WHERE " + refColumn + " = ?";
-            ISQLServerConnection connection = null;
-            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
+            //String updateSQL = "UPDATE Books SET name = ? WHERE " + refColumn + " = ?";
+            //ISQLServerConnection connection = null;
+            PreparedStatement updateStatement = connection.prepareStatement(updateComp);
 
             //updateStatement.setString(1,TableName);
 
             //updateStatement.setString(1,SetColumnName);
-            updateStatement.setString(1,NewName);
-            updateStatement.setInt(2,IDNumber);
+           // updateStatement.setString(1,NewName);
+            //updateStatement.setInt(2,IDNumber);
 
             int rowsUpdated = updateStatement.executeUpdate();
             System.out.println("Rows updated: " + rowsUpdated);
 
 
-            updateStatement.close();
+
         } catch (SQLException e) {
+            System.out.println("Rows update failed");
             e.printStackTrace();
         }
 
 
 
     }
-    public void availabilityCheck(){
+    public void availabilityCheck(String refColumn,String refID) { //checkout Computer for rent
+        //String rentColumn = "rented";
+        //String checkedOut = "1";
+        String availabilityUpdateSQL = "UPDATE Computer SET rented = 1 WHERE " + refColumn + " = " + refID;
 
+        try {
+            PreparedStatement updateStatement = connection.prepareStatement(availabilityUpdateSQL);
+            int rowsUpdated = updateStatement.executeUpdate();
+            System.out.println("Rows updated: " + rowsUpdated);
+
+        } catch(SQLException ex) {
+            System.out.println("[ERROR] Computer checkout failed.");
+            ex.printStackTrace();
+        }
     }
 
 
 
-
+//Getters and setters
     public String getName() {
         return name;
     }
