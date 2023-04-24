@@ -1,38 +1,15 @@
 package ie.atu.dbTables;
 
-import ie.atu.jdbc.dbConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class dbMusic {
-
-    //For Inserts
-    String insertTable = "";
-    String insertTrack = "";
-    String insertGenre = "";
-    String insertArtist = "";
-    String refPublic = "1996";
-    String refRented = "0";
-
-    //For Updates
-    String columnToChange = "";
-    String newInfo = "";
-    String refColumn = "";
-    int IDNumber = 16;
-
-    //For Deletes
-    public static String deleteTable = "Boob";
-    public static String deleteColumn = "Boob2";
-    public static String refID = "Boob4";
-
 
     private String track;
     private String genre;
     private String artist;
-    private int publication;
+    private String publication;
     private boolean rented;
     private Connection connection;
 
@@ -44,7 +21,7 @@ public class dbMusic {
 
     }
 
-    public dbMusic(String track, String genre, String artist, int publication, boolean rented) {
+    public dbMusic(String track, String genre, String artist, String publication, boolean rented) {
         this.track = track;
         this.genre = genre;
         this.artist = artist;
@@ -52,65 +29,76 @@ public class dbMusic {
         this.rented = rented;
     }
 
-    //For Adding new music
+    //For Adding new music into Database
     public void addMusic(){
+
+        String selectSQL = "INSERT INTO Music Values (?,?,?,?,?)";
         try {
 
             // Insert a new record into the "users" table
-            PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO ? VALUES (?, ?, ?, ?)");
-            insertStatement.setString(1,insertTable);
-            insertStatement.setString(2,insertTrack);
-            insertStatement.setString(3,insertGenre);
-            insertStatement.setString(4,insertArtist);
-            insertStatement.setString(5,refPublic);
-            insertStatement.setString(6,refRented);
-            int row = insertStatement.executeUpdate();
+            PreparedStatement insertStatement = connection.prepareStatement(selectSQL);
+            insertStatement.setString(1, track);
+            insertStatement.setString(2, genre);
+            insertStatement.setString(3, artist);
+            insertStatement.setString(4, publication);
+            insertStatement.setBoolean(5,rented);
+
             int inserted = (insertStatement.executeUpdate());
-            System.out.println("The following has successfully been inserted: " + inserted);
+            System.out.println("New Music has been added: " + inserted);
+            insertStatement.close();
         } catch (SQLException ex) {
 
-            System.out.println("Record insert failed.");
+            System.out.println("[ERROR] Adding music to database failed");
             ex.printStackTrace();
         }
     }
 
-    //For Updating Existing Data
-    public void updateMusic(){
+    //For Updating Existing Music Data
+    public void eidtMusic(String columnToChange, String newInfo, String refColumn, String refID){
+
+        String updateSQL = "UPDATE Music SET" + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
         try
         {
-            String updateSQL = "UPDATE Music SET" + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
-
-            /*updateStatement.setString(1,TableName);
-            updateStatement.setString(2,SetColumnName);
-            updateStatement.setString(3,NewName);
-            updateStatement.setString(4,refColumn);
-            updateStatement.setInt(5,IDNumber);*/
 
             int rowsUpdated = updateStatement.executeUpdate();
             System.out.println("Rows updated: " + rowsUpdated);
-
-            //connection.close();
-            updateStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            System.out.println("[ERROR] Edit Music info failed. ");
+            ex.printStackTrace();
         }
     }
 
     //For Deleting an Existing Data
-    public void deleteMusic(){
-        try (Statement statement = connection.createStatement()) {
-            PreparedStatement deleteStatement = connection.prepareStatement ("DELETE FROM ? WHERE ? = ?");
-            deleteStatement.setString(1,deleteTable);
-            deleteStatement.setString(2,deleteColumn);
-            deleteStatement.setString(3,refID);
+    public void deleteMusic(String refColumn, String refID){
 
-            int rowsDeleted = (statement.executeUpdate(deleteStatement.toString()));
-            System.out.println("Rows deleted: " + rowsDeleted);
-        } catch (SQLException e) {
-            System.out.println("Rows failed delete");
-            e.printStackTrace();
+        String deleteSQL = "DELETE FROM Music WHERE " + refColumn + "=" + refID;
+        try {
+            PreparedStatement deleteStatement = connection.prepareStatement (deleteSQL);
+            //deleteStatement.setString(2,refColumn);
+            //deleteStatement.setString(3,refID);
+
+            int rowsDeleted = (deleteStatement.executeUpdate());
+            System.out.println("Music deleted: " + rowsDeleted);
+        } catch (SQLException ex) {
+            System.out.println("[ERROR] Deleting music failed");
+            ex.printStackTrace();
         }
+    }
+
+    // Checking out Music for rent
+    public void checkout(String refColumn, String refID){
+        String updateSQL = "UPDATE Music SET rented = 1 WHERE" + refColumn + "=" + refID;
+
+        try {
+            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
+            int rowsUpdated = updateStatement.executeUpdate();
+            System.out.println("Rows Updated: " + rowsUpdated);
+        }catch (SQLException ee){
+            System.out.println("[ERROR] Music Checkout Failed. ");
+            ee.printStackTrace();
+        }
+
     }
 
     public String getTrack() {
@@ -137,11 +125,11 @@ public class dbMusic {
         this.artist = artist;
     }
 
-    public int getPublication() {
+    public String getPublication() {
         return publication;
     }
 
-    public void setPublication(int publication) {
+    public void setPublication(String publication) {
         this.publication = publication;
     }
 
