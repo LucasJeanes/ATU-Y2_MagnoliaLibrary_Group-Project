@@ -21,7 +21,7 @@ public class dbComputer implements dbMethods{
         this.connection = connection;
     }
 
-    public dbComputer(String name, String brand, String details, String memory, String price, boolean rented) {
+    public dbComputer(Connection connection, String name, String brand, String details, String memory, String price, boolean rented) {
 
         this.name = name;
         this.brand = brand;
@@ -30,6 +30,7 @@ public class dbComputer implements dbMethods{
         this.price = price;
         this.rented = rented;
     }
+
 
     /////Inserting new Value
     @Override
@@ -112,7 +113,7 @@ public class dbComputer implements dbMethods{
     public void availabilityCheck(String refColumn,String refID) { //checkout Computer for rent
         //String rentColumn = "rented";
         //String checkedOut = "1";
-        String availabilityUpdateSQL = "SELECT Computer SET rented = 1 WHERE " + refColumn + " = " + refID;
+        String availabilityUpdateSQL = "SELECT * FROM Computer SET rented = 1 WHERE " + refColumn + " = " + refID;
 
         try {
             PreparedStatement updateStatement = connection.prepareStatement(availabilityUpdateSQL);
