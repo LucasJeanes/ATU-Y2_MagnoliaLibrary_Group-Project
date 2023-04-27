@@ -2,10 +2,7 @@ package ie.atu.dbTables;
 
 import com.microsoft.sqlserver.jdbc.ISQLServerConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class dbComputer implements dbMethods{
     public String ComputerColoumn = "name, brand, details, memory, price, rented";
@@ -109,19 +106,40 @@ public class dbComputer implements dbMethods{
 
 
     }
-    public void availabilityCheck(String refColumn,String refID) { //checkout Computer for rent
-        //String rentColumn = "rented";
-        //String checkedOut = "1";
-        String availabilityUpdateSQL = "UPDATE Computer SET rented = 1 WHERE " + refColumn + " = " + refID;
+    @Override
+    public void isAvailable(String refColumn,String refID) {
+        String availabilityCheckSQL = "SELECT * FROM Computer WHERE (rented = 0 AND " + refColumn + " = " + refID + ")";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
 
-        try {
-            PreparedStatement updateStatement = connection.prepareStatement(availabilityUpdateSQL);
-            int rowsUpdated = updateStatement.executeUpdate();
-            System.out.println("Rows updated: " + rowsUpdated);
+            while (resultSet.next()) {
+                String compID = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                String brand = resultSet.getString("brand");
+                String details = resultSet.getString("details");
+                String price = resultSet.getString("price");
+                System.out.println(compID + ": " + name + " | " + brand + " | " + details + " | " + price + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void isAvailable() {
+        String availabilityCheckSQL = "SELECT * FROM Computer WHERE rented = 0";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
 
-        } catch(SQLException ex) {
-            System.out.println("[ERROR] Computer checkout failed.");
-            ex.printStackTrace();
+            while (resultSet.next()) {
+                String compID = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                String brand = resultSet.getString("brand");
+                String details = resultSet.getString("details");
+                String price = resultSet.getString("price");
+                System.out.println(compID + ": " + name + " | " + brand + " | " + details + " | " + price + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

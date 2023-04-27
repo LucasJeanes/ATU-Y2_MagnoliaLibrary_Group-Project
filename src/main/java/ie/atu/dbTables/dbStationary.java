@@ -108,6 +108,42 @@ public class dbStationary implements dbMethods{
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID) {
 
     }
+    @Override
+    public void isAvailable(String refColumn,String refID) {
+        String availabilityCheckSQL = "SELECT * FROM Stationary WHERE (rented = 0 AND " + refColumn + " = " + refID + ")";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
+
+            while (resultSet.next()) {
+                String stationaryID = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                String description = resultSet.getString("description");
+                String price = resultSet.getString("price");
+                String stock = resultSet.getString("stock");
+                System.out.println(stationaryID + ": " + name + " | " + description + " | " + price + " | " + stock + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void isAvailable() {
+        String availabilityCheckSQL = "SELECT * FROM Stationary WHERE rented = 0";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
+
+            while (resultSet.next()) {
+                String stationaryID = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                String description = resultSet.getString("description");
+                String price = resultSet.getString("price");
+                String stock = resultSet.getString("stock");
+                System.out.println(stationaryID + ": " + name + " | " + description + " | " + price + " | " + stock + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public String getStationaryColumns() {

@@ -38,7 +38,7 @@ public class BooksTest {
     @Order(2)
     public void testCheckoutBook() {
         dbBooks testBook = new dbBooks(connection,"testName", "testAuthor", "9999", false);
-        testBook.checkout("publication","9999");
+        testBook.checkout("publication","1980");
 
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM Books WHERE publication = 9999")) {
