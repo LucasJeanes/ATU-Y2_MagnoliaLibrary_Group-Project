@@ -112,7 +112,7 @@ public class dbComputer implements dbMethods{
     public void availabilityCheck(String refColumn,String refID) { //checkout Computer for rent
         //String rentColumn = "rented";
         //String checkedOut = "1";
-        String availabilityUpdateSQL = "UPDATE Computer SET rented = 1 WHERE " + refColumn + " = " + refID;
+        String availabilityUpdateSQL = "SELECT Computer SET rented = 1 WHERE " + refColumn + " = " + refID;
 
         try {
             PreparedStatement updateStatement = connection.prepareStatement(availabilityUpdateSQL);
