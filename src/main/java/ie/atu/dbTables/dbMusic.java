@@ -1,8 +1,6 @@
 package ie.atu.dbTables;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class dbMusic implements dbMethods{
 
@@ -98,7 +96,42 @@ public class dbMusic implements dbMethods{
             System.out.println("[ERROR] Music Checkout Failed. ");
             ee.printStackTrace();
         }
+    }
+    @Override
+    public void isAvailable(String refColumn,String refID) {
+        String availabilityCheckSQL = "SELECT * FROM Music WHERE (rented = 0 AND " + refColumn + " = " + refID + ")";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
 
+            while (resultSet.next()) {
+                String bookID = resultSet.getString("music_id");
+                String track = resultSet.getString("track");
+                String genre = resultSet.getString("genre");
+                String artist = resultSet.getString("artist");
+                String publication = resultSet.getString("publication");
+                System.out.println(bookID + ": " + track + " | " + artist + " | " + genre + " | " + publication + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void isAvailable() {
+        String availabilityCheckSQL = "SELECT * FROM Music WHERE rented = 0";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
+
+            while (resultSet.next()) {
+                String musicID = resultSet.getString("music_id");
+                String track = resultSet.getString("track");
+                String genre = resultSet.getString("genre");
+                String artist = resultSet.getString("artist");
+                String publication = resultSet.getString("publication");
+                System.out.println(musicID + ": " + track + " | " + artist + " | " + genre + " | " + publication + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getTrack() {

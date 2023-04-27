@@ -1,8 +1,6 @@
 package ie.atu.dbTables;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class dbBooks implements dbMethods{
     public String bookColumns = "name,author,publication,rented";
@@ -88,6 +86,40 @@ public class dbBooks implements dbMethods{
         } catch(SQLException ex) {
             System.out.println("[ERROR] Book checkout failed.");
             ex.printStackTrace();
+        }
+    }
+    @Override
+    public void isAvailable(String refColumn,String refID) {
+        String availabilityCheckSQL = "SELECT * FROM Books WHERE (rented = 0 AND " + refColumn + " = " + refID + ")";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
+
+            while (resultSet.next()) {
+                String bookID = resultSet.getString("book_id");
+                String name = resultSet.getString("name");
+                String author = resultSet.getString("author");
+                String publication = resultSet.getString("publication");
+                System.out.println(bookID + ": " + name + " | " + author + " | " + publication + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void isAvailable() {
+        String availabilityCheckSQL = "SELECT * FROM Books WHERE rented = 0";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
+
+            while (resultSet.next()) {
+                String bookID = resultSet.getString("book_id");
+                String name = resultSet.getString("name");
+                String author = resultSet.getString("author");
+                String publication = resultSet.getString("publication");
+                System.out.println(bookID + ": " + name + " | " + author + " | " + publication + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
