@@ -42,7 +42,7 @@ public class dbStationary implements dbMethods{
 
     }
 
-    public dbStationary() {
+    public dbStationary(Connection connection, String testName, String testDescription, int price, int user_discount, int stock) {
 
     }
 
