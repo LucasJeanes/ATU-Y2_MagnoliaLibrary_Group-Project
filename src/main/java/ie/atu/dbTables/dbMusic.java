@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class dbMusic {
+public class dbMusic implements dbMethods{
 
     private String track;
     private String genre;
@@ -28,9 +28,9 @@ public class dbMusic {
         this.publication = publication;
         this.rented = rented;
     }
-
+    @Override
     //For Adding new music into Database
-    public void addMusic(){
+    public void addItem(){
 
         String selectSQL = "INSERT INTO Music Values (?,?,?,?,?)";
         try {
@@ -52,9 +52,9 @@ public class dbMusic {
             ex.printStackTrace();
         }
     }
-
+    @Override
     //For Updating Existing Music Data
-    public void eidtMusic(String columnToChange, String newInfo, String refColumn, String refID){
+    public void editItem(String columnToChange, String newInfo, String refColumn, String refID){
 
         String updateSQL = "UPDATE Music SET" + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
         try
@@ -68,9 +68,9 @@ public class dbMusic {
             ex.printStackTrace();
         }
     }
-
+    @Override
     //For Deleting an Existing Data
-    public void deleteMusic(String refColumn, String refID){
+    public void deleteItem(String refColumn, String refID){
 
         String deleteSQL = "DELETE FROM Music WHERE " + refColumn + "=" + refID;
         try {

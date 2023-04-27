@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class dbComputer {
+public class dbComputer implements dbMethods{
     public String ComputerColoumn = "name, brand, details, memory, price, rented";
     private String name;
     private String brand;
@@ -32,8 +32,8 @@ public class dbComputer {
     }
 
     /////Inserting new Value
-
-    public void addComputer(){
+    @Override
+    public void addItem(){
 
         String addComp = "INSERT INTO Computer VALUES (?,?,?,?,?,?)";
 
@@ -60,8 +60,8 @@ public class dbComputer {
 
     }
     ///////Deleting columns/rows
-
-    public void deleteComputer(String refColumn,String refID){
+    @Override
+    public void deleteItem(String refColumn,String refID){
         String deleteComp = "DELETE FROM Computer WHERE " + refColumn + " = " + refID;
 
         try{
@@ -79,8 +79,9 @@ public class dbComputer {
         }
 
     }
+    @Override
     /////////Updating tables/////
-    public void updateComputer(String columnToChange, String newInfo, String refColumn, String refID){
+    public void editItem(String columnToChange, String newInfo, String refColumn, String refID){
         String updateComp = "UPDATE Computer SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
 
         try

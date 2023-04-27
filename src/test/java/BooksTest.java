@@ -19,10 +19,9 @@ public class BooksTest {
 
     @Test
     @Order(1)
-    public void testAddBook() {
-
+    public void testAddItem() {
         dbBooks testBook = new dbBooks(connection,"testName", "testAuthor", "9999", false);
-        testBook.addBook();
+        testBook.addItem();
         try (Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM Books WHERE publication = 9999")) {
 
@@ -55,10 +54,10 @@ public class BooksTest {
 
     @Test
     @Order(3)
-    public void testDeleteBook() throws SQLException {
+    public void testDeleteItem() throws SQLException {
         dbBooks testBook = new dbBooks(connection,"testName", "testAuthor", "9999", false);
 
-        testBook.deleteBook("publication","9999");
+        testBook.deleteItem("publication","9999");
 
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM Books WHERE publication = 9999")) {

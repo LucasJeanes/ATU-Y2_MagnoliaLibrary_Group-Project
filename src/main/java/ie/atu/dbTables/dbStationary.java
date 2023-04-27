@@ -2,7 +2,7 @@ package ie.atu.dbTables;
 
 import java.sql.*;
 
-public class dbStationary {
+public class dbStationary implements dbMethods{
     public static String deleteTable = "Boo";
     public static String deleteColumn = "Boo";
     public static String refID = "Boo";
@@ -46,7 +46,7 @@ public class dbStationary {
 
     }
 
-    public void updateItem(String name, String description, int price, int user_discount, int stock) {
+    public void editStationary(String name, String description, int price, int user_discount, int stock) {
         try
         {
             String updateSQL = "UPDATE Books SET name = ? WHERE " + refColumn + " = ?";
@@ -67,8 +67,8 @@ public class dbStationary {
             e.printStackTrace();
         }
     }
-
-    public void deleteItem () {
+    @Override
+    public void deleteItem(String refColumn,String refID) {
         try {
             PreparedStatement deleteStatement = connection.prepareStatement ("DELETE FROM ? WHERE ? = ?");
             deleteStatement.setString(1,deleteTable);
@@ -83,6 +83,7 @@ public class dbStationary {
         }
     }
 
+    @Override
     public void addItem(){
         try {
             // Insert a new record into the "users" table
@@ -101,6 +102,11 @@ public class dbStationary {
             System.out.println("Record insert failed.");
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public void editItem(String columnToChange, String newInfo, String refColumn, String refID) {
+
     }
 
 

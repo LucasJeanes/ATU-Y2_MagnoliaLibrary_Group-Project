@@ -1,12 +1,10 @@
 package ie.atu.dbTables;
 
-import ie.atu.dbClasses.dbUpdate;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class dbBooks {
+public class dbBooks implements dbMethods{
     public String bookColumns = "name,author,publication,rented";
     private String name;
     private String author;
@@ -26,7 +24,8 @@ public class dbBooks {
         this.publication = publication;
         this.rented = rented;
     }
-    public void editBook(String columnToChange, String newInfo, String refColumn, String refID) {
+    @Override
+    public void editItem(String columnToChange, String newInfo, String refColumn, String refID) {
         String updateSQL = "UPDATE Books SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
 
         try {
@@ -34,13 +33,14 @@ public class dbBooks {
 
             int rowsUpdated = updateStatement.executeUpdate();
             System.out.println("Rows updated: " + rowsUpdated);
+            updateStatement.close();
         } catch (SQLException ex) {
             System.out.println("[ERROR] Edit book info failed.");
             ex.printStackTrace();
         }
     }
-
-    public void addBook() {
+    @Override
+    public void addItem() {
         String selectSQL = "INSERT INTO Books VALUES (?, ?, ?, ?)";
 
         try {
@@ -59,7 +59,8 @@ public class dbBooks {
             ex.printStackTrace();
         }
     }
-    public void deleteBook(String refColumn,String refID) {
+    @Override
+    public void deleteItem(String refColumn,String refID) {
         String deleteSQL = "DELETE FROM Books WHERE " + refColumn + " = " + refID;
 
         try {
@@ -68,7 +69,7 @@ public class dbBooks {
            // deleteStatement.setString(2,refID);
             int rowsDeleted = (deleteStatement.executeUpdate());
             System.out.println("Books deleted: " + rowsDeleted);
-
+            deleteStatement.close();
         } catch (SQLException e) {
             System.out.println("[ERROR] Deleting book failed.");
             e.printStackTrace();
@@ -83,7 +84,7 @@ public class dbBooks {
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
             int rowsUpdated = updateStatement.executeUpdate();
             System.out.println("Rows updated: " + rowsUpdated);
-
+            updateStatement.close();
         } catch(SQLException ex) {
             System.out.println("[ERROR] Book checkout failed.");
             ex.printStackTrace();
