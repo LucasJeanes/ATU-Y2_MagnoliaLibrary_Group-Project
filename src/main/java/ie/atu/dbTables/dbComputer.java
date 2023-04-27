@@ -18,7 +18,7 @@ public class dbComputer implements dbMethods{
         this.connection = connection;
     }
 
-    public dbComputer(String name, String brand, String details, String memory, String price, boolean rented) {
+    public dbComputer(Connection connection, String name, String brand, String details, String memory, String price, boolean rented) {
 
         this.name = name;
         this.brand = brand;
