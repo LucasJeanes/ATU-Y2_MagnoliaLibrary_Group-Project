@@ -3,24 +3,8 @@ package ie.atu.dbTables;
 import java.sql.*;
 
 public class dbStationary implements dbMethods{
-    public static String deleteTable = "Boo";
-    public static String deleteColumn = "Boo";
-    public static String refID = "Boo";
-    public static String refValue = "Boo";
 
-    String insertTable = "Books";
-    String insertName = "BookTest";
-    String insertAuthor = "AuthorName";
-    String refPublic = "1996";
-    String refRented = "0";
 
-    String TableName = "Books";
-    String SetColumnName = "name";
-    String NewName = "DewansBookLASTONEPLS";
-    String refColumn = "book_id";
-    int IDNumber = 16;
-
-    public String stationaryColumns = "name,description,price,user_discount,stock";
     private String name;
     private String description;
     private int price;
@@ -32,49 +16,27 @@ public class dbStationary implements dbMethods{
         this.connection = connection;
     }
 
-    public dbStationary(String stationaryColumns, String name, String description, int price, int user_discount, int stock) {
-        this.stationaryColumns = stationaryColumns;
+    public dbStationary(Connection connection, String name, String description, int price, int user_discount, int stock) {
+
         this.name = name;
         this.description = description;
         this.price = price;
         this.user_discount = user_discount;
         this.stock = stock;
-
+        this.connection = connection;
     }
 
-    public dbStationary() {
 
-    }
-
-    public void editStationary(String name, String description, int price, int user_discount, int stock) {
-        try
-        {
-            String updateSQL = "UPDATE Books SET name = ? WHERE " + refColumn + " = ?";
-            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
-
-            //updateStatement.setString(1,TableName);
-
-            //updateStatement.setString(1,SetColumnName);
-            updateStatement.setString(1,NewName);
-            updateStatement.setInt(2,IDNumber);
-
-            int rowsUpdated = updateStatement.executeUpdate();
-            System.out.println("Rows updated: " + rowsUpdated);
-
-            connection.close();
-            updateStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
     @Override
     public void deleteItem(String refColumn,String refID) {
+        String deleteStationary = "DELETE FROM stationary WHERE " +  refColumn + " = " + refID;
         try {
-            PreparedStatement deleteStatement = connection.prepareStatement ("DELETE FROM ? WHERE ? = ?");
-            deleteStatement.setString(1,deleteTable);
-            deleteStatement.setString(2,deleteColumn);
-            deleteStatement.setString(3,refID);
-            deleteStatement.setString(4,refValue);
+            PreparedStatement deleteStatement = connection.prepareStatement (deleteStationary);
+          /*  deleteStatement.setString(1, name);
+            deleteStatement.setString(2, description);
+            deleteStatement.setInt(3, price);
+            deleteStatement.setInt(4, user_discount);
+            deleteStatement.setInt(5, stock);*/
             int rowsDeleted = (deleteStatement.executeUpdate(deleteStatement.toString()));
             System.out.println("Rows deleted: " + rowsDeleted);
         } catch (SQLException e) {
@@ -85,14 +47,16 @@ public class dbStationary implements dbMethods{
 
     @Override
     public void addItem(){
+        String addStationary = "INSERT INTO stationary VALUES (?, ?, ?, ?, ?)";
         try {
             // Insert a new record into the "users" table
-            PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO ? VALUES (?, ?, ?, ?)");
+            PreparedStatement insertStatement = connection.prepareStatement(addStationary);
             //insertStatement.setString(1,insertTable);
-            insertStatement.setString(1,insertName);
-            insertStatement.setString(2,insertAuthor);
-            insertStatement.setString(3,refPublic);
-            insertStatement.setString(4,refRented);
+            insertStatement.setString(1,name);
+            insertStatement.setString(2,description);
+            insertStatement.setInt(3,price);
+            insertStatement.setInt(4,user_discount);
+            insertStatement.setInt(5,stock);
             //int row = insertStatement.executeUpdate();
 
             int inserted = (insertStatement.executeUpdate());
@@ -106,17 +70,35 @@ public class dbStationary implements dbMethods{
 
     @Override
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID) {
+        try
+        {
+            String updateSQL = "UPDATE Stationary SET " + columnToChange + " = " +  newInfo + " WHERE " + refColumn +" = " + refID;
+            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
 
+            //updateStatement.setString(1,TableName);
+
+            //updateStatement.setString(1,SetColumnName);
+            // updateStatement.setString(1,NewName);
+            //updateStatement.setInt(2,IDNumber);
+
+            int rowsUpdated = updateStatement.executeUpdate();
+            System.out.println("Rows updated: " + rowsUpdated);
+
+            connection.close();
+            updateStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
-    public String getStationaryColumns() {
-        return stationaryColumns;
-    }
+   // public String getStationaryColumns() {
+   //     return stationaryColumns;
+   // }
 
-    public void setStationaryColumns(String stationaryColumns) {
-        this.stationaryColumns = stationaryColumns;
-    }
+   // public void setStationaryColumns(String stationaryColumns) {
+   //     this.stationaryColumns = stationaryColumns;
+   // }
 
     public String getName() {
         return name;
