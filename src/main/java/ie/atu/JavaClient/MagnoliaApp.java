@@ -167,7 +167,8 @@ public class MagnoliaApp {
                         System.out.print("item name: ");
                         String name = scanner.next();
                         System.out.print("\nDescription: ");
-                        String description = scanner.next();
+                        scanner.nextLine(); //Absorb newline character after scanner.next();
+                        String description = scanner.nextLine();
                         System.out.print("\nPrice: ");
                         int price = Integer.parseInt((scanner.next()));
                         System.out.print("\nUser discount: ");
