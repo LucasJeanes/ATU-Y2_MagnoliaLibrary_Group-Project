@@ -5,6 +5,7 @@ import java.util.*;
 
 public class dbConnection {
     public Connection connection() throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
         Properties properties = new Properties();
         properties.load(dbConnection.class.getClassLoader().getResourceAsStream("application.properties"));
         System.out.println("Connecting to the database");

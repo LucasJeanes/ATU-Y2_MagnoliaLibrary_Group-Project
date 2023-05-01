@@ -10,7 +10,6 @@ public class ConnectionTest {
 
         dbConnection dbConnection = new dbConnection();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = dbConnection.connection();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
