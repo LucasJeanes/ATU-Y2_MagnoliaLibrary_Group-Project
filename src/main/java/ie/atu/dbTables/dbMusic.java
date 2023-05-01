@@ -11,26 +11,24 @@ public class dbMusic implements dbMethods{
     private boolean rented;
     private Connection connection;
 
-    public dbMusic(Connection connection, String testTrack, String testGenre, String testArtist, String publication, boolean rented) {
+    public dbMusic(Connection connection, String track, String genre, String artist, String publication, boolean rented) {
         this.connection = connection;
-    }
-
-    public dbMusic() {
-
-    }
-
-    public dbMusic(String track, String genre, String artist, String publication, boolean rented) {
         this.track = track;
         this.genre = genre;
         this.artist = artist;
         this.publication = publication;
         this.rented = rented;
     }
+
+    public dbMusic() {
+
+    }
+
     @Override
     //For Adding new music into Database
     public void addItem(){
 
-        String selectSQL = "INSERT INTO Music Values (?,?,?,?,?)";
+        String selectSQL = "INSERT INTO Music (track,genre,artist,publication,rented) VALUES (?,?,?,?,?)";
         try {
 
             // Insert a new record into the "users" table
@@ -86,7 +84,7 @@ public class dbMusic implements dbMethods{
 
     // Checking out Music for rent
     public void checkout(String refColumn, String refID){
-        String updateSQL = "UPDATE Music SET rented = 1 WHERE" + refColumn + "=" + refID;
+        String updateSQL = "UPDATE music SET rented = 1 WHERE " + refColumn + " = " + refID;
 
         try {
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
@@ -104,7 +102,7 @@ public class dbMusic implements dbMethods{
              ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
 
             while (resultSet.next()) {
-                String bookID = resultSet.getString("music_id");
+                String bookID = resultSet.getString("id");
                 String track = resultSet.getString("track");
                 String genre = resultSet.getString("genre");
                 String artist = resultSet.getString("artist");
