@@ -20,7 +20,7 @@ public class BooksTest {
     @Test
     @Order(1)
     public void testAddItem() {
-        dbBooks testBook = new dbBooks(connection,"testName", "testAuthor", "9999", false);
+        dbBooks testBook = new dbBooks(connection,"testName", "testAuthor", "9990", false);
         testBook.addItem();
         try (Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM book WHERE publication = 9999")) {

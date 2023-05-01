@@ -21,7 +21,7 @@ public class StationaryTest {
     @Test
     @Order(1)
     public void testAddItem() {
-        dbStationary testStationary = new dbStationary(connection,"testName", "testDescription", 99, 99, 999);
+        dbStationary testStationary = new dbStationary(connection,"testName", "testDescription", 1, 99, 999);
         testStationary.addItem();
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM Stationary WHERE price = 10")) {

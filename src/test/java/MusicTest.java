@@ -27,14 +27,14 @@ public class MusicTest {
     @Test
     @Order(1)
     public void testAddItem(){
-        dbMusic testMusic = new dbMusic(connection,"testTrackName", "testGenre", "testArtist", "2010", false);
+        dbMusic testMusic = new dbMusic(connection,"testTrackName", "testGenre", "testArtist", "9999", false);
         testMusic.addItem();
         try(Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM Music WHERE publication = 2010")){
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM music WHERE publication = 9999")){
 
             while(resultSet.next()){
                 String track = resultSet.getString("track");
-                assertEquals("testTrack", track);
+                assertEquals("testTrackName", track);
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -44,11 +44,11 @@ public class MusicTest {
     @Test
     @Order(2)
     public void testCheckoutMusic(){
-        dbMusic testMusic = new dbMusic(connection, "testTrackName", "testGenre","testArtist", "2010", true );
-        testMusic.checkout("publication", "1980");
+        dbMusic testMusic = new dbMusic(connection, "testTrackName", "testGenre","testArtist", "9999", true );
+        testMusic.checkout("publication", "9999");
 
         try(Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM Music WHERE publication = 2010")){
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM music WHERE publication = 9999")){
 
             while(resultSet.next()){
                 String rented = resultSet.getString("rented");
@@ -62,19 +62,19 @@ public class MusicTest {
     @Test
     @Order(3)
     public void testDeleteItem() throws SQLException{
-        dbMusic testMusic = new dbMusic(connection, "testTrackName", "TestGenre", "TestArtist", "2010",false);
+        dbMusic testMusic = new dbMusic(connection, "testTrackName", "TestGenre", "TestArtist", "9999",true);
 
-        testMusic.deleteItem("publication", "1111");
+        testMusic.deleteItem("publication", "9999");
 
         try(Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Music WHERE publication = 2010")){
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM music WHERE publication = 9999")){
 
             while (resultSet.next()){
-                String name = resultSet.getString("name");
-                assertNull(name);
+                String track = resultSet.getString("track");
+                assertNull(track);
             }
-        } catch (SQLException ee){
-            ee.printStackTrace();
+        } catch (SQLException e){
+            e.printStackTrace();
         }
         connection.close();
     }
