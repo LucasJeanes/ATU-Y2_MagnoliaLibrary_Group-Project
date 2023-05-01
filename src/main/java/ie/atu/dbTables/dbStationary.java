@@ -12,16 +12,9 @@ public class dbStationary implements dbMethods{
     private int stock;
     private Connection connection;
 
-    public dbStationary(Connection connection) {
-        this.connection = connection;
-    }
-
-
 
     public dbStationary(Connection connection, String testName, String testDescription, int price, int user_discount, int stock) {
 
-       // this.name = name;
-       // this.description = description;
         this.price = price;
         this.user_discount = user_discount;
         this.stock = stock;
@@ -29,20 +22,7 @@ public class dbStationary implements dbMethods{
     }
 
     public void editStationary(String name, String description, int price, int user_discount, int stock) {
-        try
-        {
-            String updateSQL = "UPDATE Books SET name = ? WHERE " + name + " = ?";
-            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
-            updateStatement.setString(1,name);
 
-            int rowsUpdated = updateStatement.executeUpdate();
-            System.out.println("Rows updated: " + rowsUpdated);
-
-            connection.close();
-            updateStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
     @Override
     public void deleteItem(String refColumn,String refID) {
@@ -59,10 +39,12 @@ public class dbStationary implements dbMethods{
 
     @Override
     public void addItem(){
+        String selectSQL = "INSERT INTO stationary (name,description,price,user_discount,stock) VALUES (?, ?, ?, ?, ?)";
         try {
             // Insert a new record into the "users" table
-            PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO stationary VALUES (?, ?, ?, ?,?)");
-            //insertStatement.setString(1,insertTable);
+
+            PreparedStatement insertStatement = connection.prepareStatement(selectSQL);
+
             insertStatement.setString(1,name);
             insertStatement.setString(2,description);
             insertStatement.setInt(3,price);
@@ -72,16 +54,29 @@ public class dbStationary implements dbMethods{
 
             int inserted = (insertStatement.executeUpdate());
             System.out.println("The following has successfully been inserted: " + inserted);
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
 
             System.out.println("Record insert failed.");
-            ex.printStackTrace();
+            e.printStackTrace();
         }
     }
 
     @Override
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID) {
+        try
+        {
+            String updateSQL = "UPDATE Books SET name = ? WHERE " + name + " = ?";
+            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
+            updateStatement.setString(1,name);
 
+            int rowsUpdated = updateStatement.executeUpdate();
+            System.out.println("Rows updated: " + rowsUpdated);
+
+            connection.close();
+            updateStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void isAvailable(String refColumn,String refID) {

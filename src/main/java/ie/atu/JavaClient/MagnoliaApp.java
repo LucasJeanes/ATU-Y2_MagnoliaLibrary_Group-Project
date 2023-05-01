@@ -33,6 +33,7 @@ public class MagnoliaApp {
                 break;
             case 3:
                 System.out.println("You have selected: Sign in as Guest");
+
                 break;
             default:
                 System.out.println("Invalid Entry. Please Select from the following options: \nEnter[1 , 2 , 3]");
@@ -40,4 +41,5 @@ public class MagnoliaApp {
         }
 
     }
+
 }
