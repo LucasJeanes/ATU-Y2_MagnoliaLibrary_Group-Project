@@ -6,4 +6,6 @@ public interface dbMethods {
     void deleteItem(String refColumn,String refID);
     void isAvailable(String refColumn,String refID);
     void isAvailable();
+    void purchaseItem(String refColumn,String refID);
+
 }
