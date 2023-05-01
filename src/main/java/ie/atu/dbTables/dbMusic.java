@@ -132,6 +132,11 @@ public class dbMusic implements dbMethods{
         }
     }
 
+    @Override
+    public void purchaseItem(String refColumn, String refID) {
+
+    }
+
     public String getTrack() {
         return track;
     }
