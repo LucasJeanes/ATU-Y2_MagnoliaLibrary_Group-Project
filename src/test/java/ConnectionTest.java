@@ -9,10 +9,8 @@ public class ConnectionTest {
     static {
 
         dbConnection dbConnection = new dbConnection();
-        try{
+        try {
             connection = dbConnection.connection();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
