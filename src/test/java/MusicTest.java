@@ -44,11 +44,11 @@ public class MusicTest {
     @Test
     @Order(2)
     public void testCheckoutMusic(){
-        dbMusic testMusic = new dbMusic(connection, "testTrackName", "testGenre","testArtist", "9999", true );
-        testMusic.checkout("publication", "9999");
+        dbMusic testMusic = new dbMusic(connection, "testTrackName", "testGenre","testArtist", "99999", true );
+        testMusic.checkout("publication", "99999");
 
         try(Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM music WHERE publication = 9999")){
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM music WHERE publication = 99999")){
 
             while(resultSet.next()){
                 String rented = resultSet.getString("rented");
@@ -62,12 +62,12 @@ public class MusicTest {
     @Test
     @Order(3)
     public void testDeleteItem() throws SQLException{
-        dbMusic testMusic = new dbMusic(connection, "testTrackName", "TestGenre", "TestArtist", "9999",true);
+        dbMusic testMusic = new dbMusic(connection, "testTrackName", "TestGenre", "TestArtist", "99999",true);
 
-        testMusic.deleteItem("publication", "9999");
+        testMusic.deleteItem("publication", "99999");
 
         try(Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM music WHERE publication = 9999")){
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM music WHERE publication = 99999")){
 
             while (resultSet.next()){
                 String track = resultSet.getString("track");
