@@ -13,7 +13,7 @@ public class dbBooks implements dbMethods{
     public dbBooks() {
     }
     public dbBooks(Connection connection) {
-
+        this.connection = connection;
     }
     public dbBooks(Connection connection, String name, String author, String publication, boolean rented) {
         this.connection = connection;
