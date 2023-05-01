@@ -134,6 +134,12 @@ public class dbBooks implements dbMethods{
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void purchaseItem(String refColumn, String refID) {
+
+    }
+
     public void isRented() { //Show all available items
         String availabilityCheckSQL = "SELECT * FROM book WHERE rented = 1";
         try (Statement statement = connection.createStatement();

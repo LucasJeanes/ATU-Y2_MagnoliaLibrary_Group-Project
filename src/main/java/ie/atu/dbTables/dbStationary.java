@@ -23,7 +23,7 @@ public class dbStationary implements dbMethods{
 
     }
 
-    public dbStationary() {
+    public dbStationary(Connection connection) {
     }
 
     @Override
@@ -66,9 +66,10 @@ public class dbStationary implements dbMethods{
 
     @Override
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID) {
+        String updateSQL = "UPDATE stationary SET name = ? WHERE " + name + " = ?";
         try
         {
-            String updateSQL = "UPDATE Books SET name = ? WHERE " + name + " = ?";
+
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
             updateStatement.setString(1,name);
 
@@ -78,8 +79,25 @@ public class dbStationary implements dbMethods{
             connection.close();
             updateStatement.close();
         } catch (SQLException e) {
+            System.out.println("Record insert failed.");
             e.printStackTrace();
         }
+    }
+    public void purchaseItem(String refColumn,String refID){
+        String purchaseSQL = "UPDATE stationary SET stock = stock - 1 WHERE"+ name + "= ?";
+        try{
+        PreparedStatement updateStatement = connection.prepareStatement(purchaseSQL);
+        updateStatement.setString(1,name);
+
+        int rowsUpdated = updateStatement.executeUpdate();
+        System.out.println("Rows updated: " + rowsUpdated);
+
+        connection.close();
+        updateStatement.close();
+    } catch (SQLException e) {
+            System.out.println("Record insert failed.");
+        e.printStackTrace();
+    }
     }
     @Override
     public void isAvailable(String refColumn,String refID) {

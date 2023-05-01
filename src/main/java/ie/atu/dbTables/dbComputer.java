@@ -143,9 +143,13 @@ public class dbComputer implements dbMethods{
         }
     }
 
+    @Override
+    public void purchaseItem(String refColumn, String refID) {
+
+    }
 
 
-//Getters and setters
+    //Getters and setters
     public String getName() {
         return name;
     }
