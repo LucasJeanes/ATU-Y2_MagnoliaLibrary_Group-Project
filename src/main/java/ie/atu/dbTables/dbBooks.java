@@ -39,7 +39,7 @@ public class dbBooks implements dbMethods{
     }
     @Override
     public void addItem() {
-        String selectSQL = "INSERT INTO Book VALUES (?, ?, ?, ?)";
+        String selectSQL = "INSERT INTO book (name, author, publication, rented) VALUES (?, ?, ?, ?)";
 
         try {
             PreparedStatement insertStatement = connection.prepareStatement(selectSQL);
@@ -59,12 +59,12 @@ public class dbBooks implements dbMethods{
     }
     @Override
     public void deleteItem(String refColumn,String refID) {
-        String deleteSQL = "DELETE FROM Book WHERE " + refColumn + " = " + refID;
+        String deleteSQL = "DELETE FROM book WHERE " + refColumn + " = " + refID;
 
         try {
             PreparedStatement deleteStatement = connection.prepareStatement(deleteSQL);
-            //deleteStatement.setString(1,refColumn);
-           // deleteStatement.setString(2,refID);
+            //deleteStatement.setString(1, refColumn);
+            //deleteStatement.setString(2, refID);
             int rowsDeleted = (deleteStatement.executeUpdate());
             System.out.println("Books deleted: " + rowsDeleted);
             deleteStatement.close();
@@ -76,7 +76,7 @@ public class dbBooks implements dbMethods{
     public void checkout(String refColumn,String refID) { //checkout book for rent
         //String rentColumn = "rented";
         //String checkedOut = "1";
-        String updateSQL = "UPDATE Book SET rented = 1 WHERE " + refColumn + " = " + refID;
+        String updateSQL = "UPDATE book SET rented = 1 WHERE " + refColumn + " = " + refID;
 
         try {
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
@@ -90,7 +90,7 @@ public class dbBooks implements dbMethods{
     }
     @Override
     public void isAvailable(String refColumn,String refID) {    //If there is a specific item user wants to check
-        String availabilityCheckSQL = "SELECT * FROM Book WHERE (rented = 0 AND " + refColumn + " = " + refID + ")";
+        String availabilityCheckSQL = "SELECT * FROM book WHERE (rented = 0 AND " + refColumn + " = " + refID + ")";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
 
@@ -107,7 +107,7 @@ public class dbBooks implements dbMethods{
     }
     @Override
     public void isAvailable() { //Show all available items
-        String availabilityCheckSQL = "SELECT * FROM Book WHERE rented = 0";
+        String availabilityCheckSQL = "SELECT * FROM book WHERE rented = 0";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
 
