@@ -89,7 +89,7 @@ public class dbBooks implements dbMethods{
         }
     }
     @Override
-    public void isAvailable(String refColumn,String refID) {
+    public void isAvailable(String refColumn,String refID) {    //If there is a specific item user wants to check
         String availabilityCheckSQL = "SELECT * FROM Books WHERE (rented = 0 AND " + refColumn + " = " + refID + ")";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
@@ -106,7 +106,7 @@ public class dbBooks implements dbMethods{
         }
     }
     @Override
-    public void isAvailable() {
+    public void isAvailable() { //Show all available items
         String availabilityCheckSQL = "SELECT * FROM Books WHERE rented = 0";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
