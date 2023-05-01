@@ -11,7 +11,7 @@ public class dbMusic implements dbMethods{
     private boolean rented;
     private Connection connection;
 
-    public dbMusic(Connection connection) {
+    public dbMusic(Connection connection, String testTrack, String testGenre, String testArtist, String publication, boolean rented) {
         this.connection = connection;
     }
 
