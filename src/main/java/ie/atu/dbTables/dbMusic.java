@@ -4,6 +4,7 @@ import java.sql.*;
 
 public class dbMusic implements dbMethods{
 
+    public String musicColumns = "track, genre, artist, publication, rented";
     private String track;
     private String genre;
     private String artist;
@@ -22,6 +23,10 @@ public class dbMusic implements dbMethods{
 
     public dbMusic() {
 
+    }
+
+    public dbMusic(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
@@ -52,7 +57,8 @@ public class dbMusic implements dbMethods{
     //For Updating Existing Music Data
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID){
 
-        String updateSQL = "UPDATE Music SET" + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
+        String updateSQL = "UPDATE Music SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
+
         try
         {
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
@@ -95,19 +101,27 @@ public class dbMusic implements dbMethods{
             ee.printStackTrace();
         }
     }
+
+    //String availabilityCheckSQL = "SELECT * FROM music WHERE (rented = 0 AND " + refColumn + " = " + refID + ")";
     @Override
     public void isAvailable(String refColumn,String refID) {
-        String availabilityCheckSQL = "SELECT * FROM Music WHERE (rented = 0 AND " + refColumn + " = " + refID + ")";
+        String availabilityCheckSQL = "SELECT * FROM music WHERE " + refColumn + " = " + refID;
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
 
             while (resultSet.next()) {
-                String bookID = resultSet.getString("id");
+                String musicID = resultSet.getString("id");
                 String track = resultSet.getString("track");
                 String genre = resultSet.getString("genre");
                 String artist = resultSet.getString("artist");
                 String publication = resultSet.getString("publication");
-                System.out.println(bookID + ": " + track + " | " + artist + " | " + genre + " | " + publication + "\n");
+                String rented = resultSet.getString("rented");
+                if(rented.equals("1")) {
+                    rented = "Rented";
+                } else {
+                    rented = "In Stock";
+                }
+                System.out.println(musicID + ": " + track + " | " + genre + " | " + artist + " | " + publication + " | " + rented);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -115,21 +129,85 @@ public class dbMusic implements dbMethods{
     }
     @Override
     public void isAvailable() {
-        String availabilityCheckSQL = "SELECT * FROM Music WHERE rented = 0";
+        String availabilityCheckSQL = "SELECT * FROM music WHERE rented = 0";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
 
             while (resultSet.next()) {
-                String musicID = resultSet.getString("music_id");
+                String musicID = resultSet.getString("id");
                 String track = resultSet.getString("track");
                 String genre = resultSet.getString("genre");
                 String artist = resultSet.getString("artist");
                 String publication = resultSet.getString("publication");
-                System.out.println(musicID + ": " + track + " | " + artist + " | " + genre + " | " + publication + "\n");
+                String rented = resultSet.getString("rented");
+                if(rented.equals("1")){
+                    rented = "Rented";
+                } else {
+                    rented = "In Stock";
+                }
+                System.out.println(musicID + ": " + track + " | " + genre + " | " + artist + " | " + publication + " | " + rented);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+     public void toRent() { //Show all available items
+        String availabilityCheckSQL = "SELECT * FROM music WHERE rented = 1";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
+
+            while (resultSet.next()) {
+                String musicID = resultSet.getString("id");
+                String track = resultSet.getString("track");
+                String genre = resultSet.getString("genre");
+                String artist = resultSet.getString("artist");
+                String publication = resultSet.getString("publication");
+                String rented = resultSet.getString("rented");
+                if(rented.equals("1")) {
+                    rented = "Rented";
+                } else {
+                    rented = "In Stock";
+                }
+                System.out.println(musicID + ": " + track + " | " + genre + " | " + artist + " | " + publication + " | " + rented);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void showAll() { //Show all available items
+        String availabilityCheckSQL = "SELECT * FROM music";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
+
+            while (resultSet.next()) {
+                String musicID = resultSet.getString("id");
+                String track = resultSet.getString("track");
+                String genre = resultSet.getString("genre");
+                String artist = resultSet.getString("artist");
+                String publication = resultSet.getString("publication");
+                String rented = resultSet.getString("rented");
+                if(rented.equals("1")) {
+                    rented = "Rented";
+                } else {
+                    rented = "In Stock";
+                }
+                System.out.println(musicID + ": " + track + " | " + genre + " | " + artist + " | " + publication + " | " + rented);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Getters and Setters
+    public String getMusicColumns() {
+        return musicColumns;
+    }
+
+    public void setMusicColumns(String musicColumns) {
+        this.musicColumns = musicColumns;
     }
 
     public String getTrack() {
