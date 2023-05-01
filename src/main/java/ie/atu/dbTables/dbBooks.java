@@ -90,16 +90,22 @@ public class dbBooks implements dbMethods{
     }
     @Override
     public void isAvailable(String refColumn,String refID) {    //If there is a specific item user wants to check
-        String availabilityCheckSQL = "SELECT * FROM book WHERE (rented = 0 AND " + refColumn + " = " + refID + ")";
+        String availabilityCheckSQL = "SELECT * FROM book WHERE " + refColumn + " = " + refID;
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
 
             while (resultSet.next()) {
-                String bookID = resultSet.getString("book_id");
+                String bookID = resultSet.getString("id");
                 String name = resultSet.getString("name");
                 String author = resultSet.getString("author");
                 String publication = resultSet.getString("publication");
-                System.out.println(bookID + ": " + name + " | " + author + " | " + publication + "\n");
+                String rented = resultSet.getString("rented");
+                if(rented.equals("1")) {
+                    rented = "Rented";
+                } else {
+                    rented = "In Stock";
+                }
+                System.out.println(bookID + ": " + name + " | " + author + " | " + publication + " | " + rented);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -112,11 +118,61 @@ public class dbBooks implements dbMethods{
              ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
 
             while (resultSet.next()) {
-                String bookID = resultSet.getString("book_id");
+                String bookID = resultSet.getString("id");
                 String name = resultSet.getString("name");
                 String author = resultSet.getString("author");
                 String publication = resultSet.getString("publication");
-                System.out.println(bookID + ": " + name + " | " + author + " | " + publication + "\n");
+                String rented = resultSet.getString("rented");
+                if(rented.equals("1")) {
+                    rented = "Rented";
+                } else {
+                    rented = "In Stock";
+                }
+                System.out.println(bookID + ": " + name + " | " + author + " | " + publication + " | " + rented);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void isRented() { //Show all available items
+        String availabilityCheckSQL = "SELECT * FROM book WHERE rented = 1";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
+
+            while (resultSet.next()) {
+                String bookID = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                String author = resultSet.getString("author");
+                String publication = resultSet.getString("publication");
+                String rented = resultSet.getString("rented");
+                if(rented.equals("1")) {
+                    rented = "Rented";
+                } else {
+                    rented = "In Stock";
+                }
+                System.out.println(bookID + ": " + name + " | " + author + " | " + publication + " | " + rented);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void showAll() { //Show all available items
+        String availabilityCheckSQL = "SELECT * FROM book";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
+
+            while (resultSet.next()) {
+                String bookID = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                String author = resultSet.getString("author");
+                String publication = resultSet.getString("publication");
+                String rented = resultSet.getString("rented");
+                if(rented.equals("1")) {
+                    rented = "Rented";
+                } else {
+                    rented = "In Stock";
+                }
+                System.out.println(bookID + ": " + name + " | " + author + " | " + publication + " | " + rented);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -132,6 +188,6 @@ public class dbBooks implements dbMethods{
     public void setAuthor(String author) {this.author = author;}
     public String getPublication() {return publication;}
     public void setPublication(String publication) {this.publication = publication;}
-    public boolean isRented() {return rented;}
+    public boolean rented() {return rented;}
     public void setRented(boolean rented) {this.rented = rented;}
 }
