@@ -20,7 +20,7 @@ public class MagnoliaApp {
         */
 
         System.out.println("Welcome to the Magnolia Library Terminal.\n\nPlease select from the following options: \nEnter[1 , 2 , 3]");
-        System.out.println("1. Login\n2. Create Account\n3. Sign in as Guest");
+        System.out.println("---[MENU]---\n1. Books\n2. Stationary\n3. Music\n4. Book a Computer");
 
         int userInput = scanner.nextInt();
 
