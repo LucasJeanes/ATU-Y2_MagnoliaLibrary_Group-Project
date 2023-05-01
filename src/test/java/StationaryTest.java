@@ -28,7 +28,7 @@ public class StationaryTest {
 
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
-                assertEquals("testName",name);
+                assertEquals("testName", name );
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -39,10 +39,10 @@ public class StationaryTest {
     public void testDeleteItem() throws SQLException {
         dbStationary testStationary = new dbStationary(connection,"testName", "testDescription", 99, 99, 999);
 
-        testStationary.deleteItem("name","testName");
+        testStationary.deleteItem("stock","999");
 
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM stationary WHERE price = 10")) {
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM stationary WHERE stock = 999")) {
 
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
