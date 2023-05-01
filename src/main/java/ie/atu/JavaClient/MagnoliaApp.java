@@ -19,12 +19,13 @@ public class MagnoliaApp {
             e.printStackTrace();
         }
 
-        System.out.println("Welcome to the Magnolia Library Terminal.");
-        System.out.println("Please select from the following options: ");
-        System.out.println("---[MENU]---\n1. Books\n2. Stationary\n3. Music\n4. Computers\n\nEnter[1 , 2 , 3 , 4]");
-
-        String userInput = scanner.next();
+        String userInput = "0";
         while(!userInput.equals("q")) {
+            System.out.println("\n\nWelcome to the Magnolia Library Terminal.");
+            System.out.println("Please select from the following options: ");
+            System.out.println("---[MENU]---\n1. Books\n2. Stationary\n3. Music\n4. Computers\n\nEnter[1 , 2 , 3 , 4]");
+            userInput = scanner.next();
+
             switch (userInput) {
                 case "1":
                     System.out.println("You have selected: Books");
@@ -48,8 +49,11 @@ public class MagnoliaApp {
             }
             //BOOK MENU
             if(libraryMenu == 1) {
+                String refID;
+                String refColumn;
+                int stringSize;
                 System.out.println("\nPlease select from the following options: ");
-                System.out.println("---[BOOKS]---\n1. Add new book to database\n2. Edit existing books\n3. Checkout book\n4. Check available books\n5. Delete book\n\nEnter[1 , 2 , 3 , 4 , 5]");
+                System.out.println("---[BOOKS]---\n1. Add new book to database\n2. Edit existing books\n3. Checkout book\n4. Check available books\n5. Delete book\n6. Back to selection\n\nEnter[1 , 2 , 3 , 4 , 5]");
                 String bookInput = scanner.next();
                 switch(bookInput) {
                     case "1": //Add new book
@@ -66,10 +70,9 @@ public class MagnoliaApp {
                     case "2": //Edit existing data
                         System.out.println("To edit an existing book in the database, please input the following: ");
                         System.out.print("Input either name of the book or book ID you want to edit: ");
-                        String refID = scanner.next();
-                        int stringSize = refID.length();
-                        String refColumn;
-                        if(stringSize == 2) {
+                        refID = scanner.next();
+                        stringSize = refID.length();
+                        if(stringSize <= 2) {
                             refColumn = "id";
                         } else {
                             refColumn = "name";
@@ -82,14 +85,73 @@ public class MagnoliaApp {
                         updateBook.editItem(columnToChange,newInfo,refColumn, refID);
                         break;
                     case "3": //Checkout book
-
+                        System.out.print("Input the name or ID no. of the book to check out: ");
+                        refID = scanner.next();
+                        stringSize = refID.length();
+                        if(stringSize <= 2) {
+                            refColumn = "id";
+                        } else {
+                            refColumn = "name";
+                        }
+                        dbBooks checkoutBook = new dbBooks(connection);
+                        checkoutBook.checkout(refColumn,refID);
                         break;
                     case "4": //Check available books
-                        System.out.println("1");
+                        System.out.println("\nPlease select from the following: ");
+                        System.out.println("1. All books in database\n2. Specific book search");
+                        dbBooks availableBooks = new dbBooks(connection);
+                        String rentedInput = scanner.next();
+                        switch (rentedInput) {
+                            case "1":
+                                System.out.println("Please select from the following: ");
+                                System.out.println("1. Show available books\n2. Show rented books\n3. Show All");
+                                rentedInput = scanner.next();
+                                if(rentedInput.equals("1")) {
+                                    availableBooks.isAvailable();
+                                } else if(rentedInput.equals("2")) {
+                                    availableBooks.isRented();
+                                } else {
+                                    availableBooks.showAll();
+                                }
+                                break;
+                            case "2":
+                                System.out.print("Input the name or ID no. of the book to view: ");
+                                refID = scanner.next();
+                                stringSize = refID.length();
+                                if(stringSize <= 2) {
+                                    refColumn = "id";
+                                } else {
+                                    refColumn = "name";
+                                }
+                                availableBooks.isAvailable(refColumn,refID);
+                                break;
+                            default:
+                                System.out.println("Invalid Selection.");
+                                System.out.println("\nPlease select from the following: ");
+                                System.out.println("1. All books in database\n2. Specific book search");
+                                break;
+                        }
                         break;
-                    case "5": //Delete book from database
+
+                    case "5":   //DELETE BOOK FROM DB
+                        System.out.println("Input the name or ID no. of the book to DELETE from database.");
+                        System.out.println("NOTE: THIS CANNOT BE UNDONE");
+                        dbBooks removeBook = new dbBooks(connection);
+                        refID = scanner.next();
+                        stringSize = refID.length();
+                        if(stringSize <= 2) {
+                            refColumn = "id";
+                        } else {
+                            refColumn = "name";
+                        }
+                        removeBook.deleteItem(refColumn,refID);
+                        break;
+                    case "6": //Return to main menu
+                        libraryMenu = 0;
                         break;
                     default:
+                        System.out.println("\nInvalid entry.\nPlease select from the following options: ");
+                        System.out.println("---[BOOKS]---\n1. Add new book to database\n2. Edit existing books\n3. Checkout book\n4. Check available books\n5. Delete book\n\nEnter[1 , 2 , 3 , 4 , 5]");
                         break;
                 }
             }
@@ -110,6 +172,7 @@ public class MagnoliaApp {
                 System.out.println("\nPlease select from the following options: ");
                 System.out.println("---[COMPUTERS]---\n1. Add new computer to database\n2. Edit existing items\n3. Book a computer\n4. Check available computers\n\nEnter[1 , 2 , 3 , 4]");
                 userInput = scanner.next();
+                //Add switch case for class specific methods
             }
         }
     }
