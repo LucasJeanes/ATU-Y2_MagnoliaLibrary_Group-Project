@@ -13,23 +13,26 @@ public class dbStationary implements dbMethods{
     private Connection connection;
 
 
-    public dbStationary(Connection connection, String testName, String testDescription, int price, int user_discount, int stock) {
-
+    public dbStationary(Connection connection, String name, String description, int price, int user_discount, int stock) {
+        this.connection = connection;
+        this.name = name;
+        this.description = description;
         this.price = price;
         this.user_discount = user_discount;
         this.stock = stock;
 
     }
 
-    public void editStationary(String name, String description, int price, int user_discount, int stock) {
-
+    public dbStationary() {
     }
+
     @Override
     public void deleteItem(String refColumn,String refID) {
+        String deleteSQL ="DELETE FROM stationary WHERE " + refColumn + " = " + refID;
         try {
-            PreparedStatement deleteStatement = connection.prepareStatement ("DELETE FROM stationary WHERE "+ refColumn +" = "+ refID);
+            PreparedStatement deleteStatement = connection.prepareStatement(deleteSQL);
 
-            int rowsDeleted = (deleteStatement.executeUpdate(deleteStatement.toString()));
+            int rowsDeleted = (deleteStatement.executeUpdate());
             System.out.println("Rows deleted: " + rowsDeleted);
         } catch (SQLException e) {
             System.out.println("Rows failed delete");
