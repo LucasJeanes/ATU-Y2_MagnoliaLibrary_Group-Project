@@ -6,14 +6,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ConnectionTest {
 
     static Connection connection;
-    static {
 
+    static {
         dbConnection dbConnection = new dbConnection();
+
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = dbConnection.connection();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
