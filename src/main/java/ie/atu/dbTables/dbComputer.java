@@ -13,15 +13,15 @@ public class dbComputer implements dbMethods{
     private Connection connection;
 
     public dbComputer() {
-
     }
 
     public dbComputer(Connection connection) {
+
         this.connection = connection;
     }
 
     public dbComputer(Connection connection, String name, String brand, String details, String memory, String price, boolean rented) {
-
+        this.connection= connection;
         this.name = name;
         this.brand = brand;
         this.details = details;
@@ -30,8 +30,7 @@ public class dbComputer implements dbMethods{
         this.rented = rented;
     }
 
-    public dbComputer(Connection connection, String name, String brand, String details, String memory, boolean b) {
-    }
+
 
     /////Inserting new Value
     @Override
@@ -86,7 +85,7 @@ public class dbComputer implements dbMethods{
     @Override
     /////////Updating tables/////
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID){
-        String updateSQL = "UPDATE Computer SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
+        String updateSQL = "UPDATE computer SET " + columnToChange + " = \"" + newInfo + "\" WHERE " + refColumn + " = " + refID;
 
         try
         {

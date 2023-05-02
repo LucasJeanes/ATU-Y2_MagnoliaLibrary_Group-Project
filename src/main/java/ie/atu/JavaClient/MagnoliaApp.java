@@ -416,6 +416,8 @@ public class MagnoliaApp {
                         case "2" -> { //Edit existing data
                             System.out.println("To edit an existing Computer in the database, please input the following: ");
                             System.out.print("Input either name of the Computer or Computer ID you want to edit: ");
+                            scanner.nextLine();
+
                             refID = scanner.nextLine();
                             stringSize = refID.length();
                             if (stringSize <= 2) {
