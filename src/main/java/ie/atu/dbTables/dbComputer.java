@@ -3,7 +3,7 @@ package ie.atu.dbTables;
 import java.sql.*;
 
 public class dbComputer implements dbMethods{
-    public String ComputerColoumns = "name, brand, details, memory, price, rented";
+    public String ComputerColumns = "name, brand, details, memory, price, rented";
     private String name;
     private String brand;
     private String details;
@@ -13,15 +13,15 @@ public class dbComputer implements dbMethods{
     private Connection connection;
 
     public dbComputer() {
-
     }
 
     public dbComputer(Connection connection) {
+
         this.connection = connection;
     }
 
     public dbComputer(Connection connection, String name, String brand, String details, String memory, String price, boolean rented) {
-
+        this.connection= connection;
         this.name = name;
         this.brand = brand;
         this.details = details;
@@ -30,8 +30,7 @@ public class dbComputer implements dbMethods{
         this.rented = rented;
     }
 
-    public dbComputer(Connection connection, String name, String brand, String details, String memory, boolean b) {
-    }
+
 
     /////Inserting new Value
     @Override
@@ -83,10 +82,11 @@ public class dbComputer implements dbMethods{
         }
 
     }
+
     @Override
     /////////Updating tables/////
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID){
-        String updateSQL = "UPDATE Computer SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
+        String updateSQL = "UPDATE computer SET " + columnToChange + " = \"" + newInfo + "\" WHERE " + refColumn + " = " + refID;
 
         try
         {
@@ -113,7 +113,7 @@ public class dbComputer implements dbMethods{
 
 
     }
-    public void checkout(String refColumn,String refID) { //checkout book for rent
+    public void checkout(String refColumn,String refID, int user_id) { //checkout book for rent
         //String rentColumn = "rented";
         //String checkedOut = "1";
         String updateSQL = "UPDATE Computer SET rented = 1 WHERE " + refColumn + " = " + refID;
@@ -129,7 +129,7 @@ public class dbComputer implements dbMethods{
         }
     }
 
-    @Override
+
     public void isStatAvailable() {
 
     }
@@ -159,7 +159,11 @@ public class dbComputer implements dbMethods{
         }
     }
 
-    @Override
+    public void purchaseItem(String refColumn, String refID) {
+
+    }
+
+
     public void purchaseItem(String refColumn, String refID, int pnum) {
 
     }
@@ -237,6 +241,11 @@ public class dbComputer implements dbMethods{
         }
     }
 
+
+    @Override
+    public void toRent() {
+
+    }
 
 
     //Getters and setters
