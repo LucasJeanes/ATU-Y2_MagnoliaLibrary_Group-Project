@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 public class MagnoliaApp {
     public static void main(String[] args) {
-        int user_id = 0;
         int libraryMenu = 0;
         Connection connection = null;
 
@@ -24,7 +23,7 @@ public class MagnoliaApp {
 
         String userInput = "0";
         while (!userInput.equals("q")) {
-            System.out.println("\n\nWelcome to the MAGNOLIA Library Terminal.\n");
+            System.out.println("\n\nWelcome to the Magnolia Library Terminal.");
             System.out.println("Please select from the following options: ");
             System.out.println("---[MENU]---\n1. Books\n2. Stationary\n3. Music\n4. Computers\n\nEnter[1 , 2 , 3 , 4]");
             userInput = scanner.next();
@@ -82,9 +81,8 @@ public class MagnoliaApp {
                         }
                         System.out.print("\nInformation to edit(name, author, publication): ");
                         String columnToChange = scanner.next();
-                        scanner.nextLine();
                         System.out.print("\nInput the updated information: ");
-                        String newInfo = scanner.nextLine();
+                        String newInfo = scanner.next();
                         dbBooks updateBook = new dbBooks(connection);
                         updateBook.editItem(columnToChange, newInfo, refColumn, refID);
                     }
@@ -98,7 +96,7 @@ public class MagnoliaApp {
                             refColumn = "name";
                         }
                         dbBooks checkoutBook = new dbBooks(connection);
-                        checkoutBook.checkout(refColumn, refID, user_id);
+                        checkoutBook.checkout(refColumn, refID);
                     }
                     case "4" -> { //Check available books
                         System.out.println("\nPlease select from the following: ");
@@ -195,8 +193,8 @@ public class MagnoliaApp {
                         }
                         System.out.print("\nInformation to edit(name, description, price, user_discount, stock): ");
                         String columnToChange = scanner.next();
-                        scanner.nextLine();
                         System.out.print("\nInput the updated information: ");
+                        scanner.nextLine();
                         String newInfo = scanner.nextLine();
                         dbStationary updateStationary = new dbStationary(connection);
                         updateStationary.editItem(columnToChange, newInfo, refColumn, refID);
@@ -271,14 +269,11 @@ public class MagnoliaApp {
                     case "1": //Add new Music
                         System.out.println("To add new music to the database, please input the following: ");
                         System.out.print("Track name: ");
-                        scanner.nextLine();
-                        String track = scanner.nextLine();
+                        String track = scanner.next();
                         System.out.print("\nGenre: ");
-                        String genre = scanner.nextLine();
-                        //scanner.nextLine();
+                        String genre = scanner.next();
                         System.out.print("\nArtist: ");
-                        String artist = scanner.nextLine();
-                        //scanner.nextLine();
+                        String artist = scanner.next();
                         System.out.print("\nPublication date: ");
                         String publication = scanner.next();
                         dbMusic newMusic = new dbMusic(connection, track, genre, artist, publication, false);
@@ -287,27 +282,23 @@ public class MagnoliaApp {
                     case "2": //Edit Existing Data
                         System.out.println("To edit an existing Music in the database, please input the following: ");
                         System.out.print("Input either name of the music track or music ID you want to edit: ");
-                        scanner.nextLine();
-                        refID = scanner.nextLine();
+                        refID = scanner.next();
                         stringSize = refID.length();
                         if (stringSize <= 2){
                             refColumn = "id";
                         } else {
-                            refColumn = "track";
+                            refColumn = "name";
                         }
                         System.out.print("\nInformation to edit(track name, genre, artist, publication): ");
-                        String columnToChange = scanner.nextLine();
-                        //scanner.nextLine();
+                        String columnToChange = scanner.next();
                         System.out.print("\nInput the updated information: ");
-                        String newInfo = scanner.nextLine();
-                        //scanner.nextLine();
+                        String newInfo = scanner.next();
                         dbMusic updateMusic = new dbMusic(connection);
                         updateMusic.editItem(columnToChange,newInfo,refColumn,refID);
                         break;
                     case "3": //Checkout Music
                         System.out.print("Input the track name or ID no. of the music to check out: ");
-                        scanner.nextLine();
-                        refID = scanner.nextLine();
+                        refID = scanner.next();
                         stringSize = refID.length();
                         if(stringSize <= 2) {
                             refColumn = "id";
@@ -315,7 +306,7 @@ public class MagnoliaApp {
                             refColumn = "track";
                         }
                         dbMusic checkoutMusic = new dbMusic(connection);
-                        checkoutMusic.checkout(refColumn,refID, user_id);
+                        checkoutMusic.checkout(refColumn,refID);
                         break;
                     case "4": //Check Available Music
                         System.out.println("\nPlease select from the following: ");
@@ -337,13 +328,12 @@ public class MagnoliaApp {
                                 break;
                             case "2":
                                 System.out.print("Input the track name or ID no. of the music to view: ");
-                                scanner.nextLine();
-                                refID = scanner.nextLine();
+                                refID = scanner.next();
                                 stringSize = refID.length();
                                 if(stringSize <= 2) {
                                     refColumn = "id";
                                 } else {
-                                    refColumn = "track";
+                                    refColumn = "name";
                                 }
                                 availableMusic.isAvailable(refColumn,refID);
                                 break;
@@ -359,8 +349,7 @@ public class MagnoliaApp {
                         System.out.println("Input the track name or ID no. of the music to DELETE from database.");
                         System.out.println("NOTE: THIS CANNOT BE UNDONE!");
                         dbMusic removeMusic = new dbMusic(connection);
-                        scanner.nextLine();
-                        refID = scanner.nextLine();
+                        refID = scanner.next();
                         stringSize = refID.length();
                         if(stringSize <= 2) {
                             refColumn = "id";
@@ -399,28 +388,24 @@ public class MagnoliaApp {
                             String details = scanner.nextLine();
                             System.out.print("\nmemory: ");
                             String memory = scanner.nextLine();
-                            System.out.print("\nprice: ");
-                            String price = scanner.nextLine();
 
-                            dbComputer newComputer = new dbComputer(connection, name, brand, details, memory,price, false);
+                            dbComputer newComputer = new dbComputer(connection, name, brand, details, memory, false);
                             newComputer.addItem();
                         }
                         case "2" -> { //Edit existing data
                             System.out.println("To edit an existing Computer in the database, please input the following: ");
                             System.out.print("Input either name of the Computer or Computer ID you want to edit: ");
-                            scanner.nextLine();
-
-                            refID = scanner.nextLine();
+                            refID = scanner.next();
                             stringSize = refID.length();
                             if (stringSize <= 2) {
                                 refColumn = "id";
                             } else {
                                 refColumn = "name";
                             }
-                            System.out.print("\nInformation to edit(name, brand, details, memory, price): ");
-                            String columnToChange = scanner.nextLine();
+                            System.out.print("\nInformation to edit(name, brand, details, memory): ");
+                            String columnToChange = scanner.next();
                             System.out.print("\nInput the updated information: ");
-                            String newInfo = scanner.nextLine();
+                            String newInfo = scanner.next();
                             dbComputer updateComputer = new dbComputer(connection);
                             updateComputer.editItem(columnToChange, newInfo, refColumn, refID);
                         }
@@ -434,7 +419,7 @@ public class MagnoliaApp {
                                 refColumn = "name";
                             }
                             dbComputer checkoutComputer = new dbComputer(connection);
-                            checkoutComputer.checkout(refColumn, refID, user_id);
+                            checkoutComputer.checkout(refColumn, refID);
                         }
                         case "4" -> { //Check available Computer
                             System.out.println("\nPlease select from the following: ");

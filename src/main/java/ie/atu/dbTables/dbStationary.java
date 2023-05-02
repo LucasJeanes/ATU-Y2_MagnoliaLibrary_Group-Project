@@ -46,11 +46,6 @@ public class dbStationary implements dbMethods {
     }
 
     @Override
-    public void checkout(String refColumn, String refID, int userID) {
-
-    }
-
-    @Override
     public void addItem() {
         String selectSQL = "INSERT INTO stationary (name,description,price,user_discount,stock) VALUES (?, ?, ?, ?, ?)";
         try {
@@ -129,15 +124,7 @@ public class dbStationary implements dbMethods {
         }
     }
 
-    @Override
-    public void purchaseItem(String refColumn, String refID) {
 
-    }
-
-    @Override
-    public void toRent() {
-
-    }
 
 
     public void purchaseItem(String refColumn, String refID, int pnum) {
@@ -178,7 +165,7 @@ public class dbStationary implements dbMethods {
     private void assertEquals(String testName, String name) {
     }
 
-
+    @Override
     public void checkout(String refColumn, String refID) {
 
     }
@@ -208,7 +195,7 @@ public class dbStationary implements dbMethods {
             e.printStackTrace();
         }
     }
-
+   @Override
     public void isStatAvailable() { //Show all available items
         String availabilityCheckSQL = "SELECT * FROM Stationary WHERE stock <> 0";
         try (Statement statement = connection.createStatement();
