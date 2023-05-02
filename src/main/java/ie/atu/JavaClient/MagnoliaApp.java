@@ -1,6 +1,7 @@
 package ie.atu.JavaClient;
 
 import ie.atu.dbTables.dbBooks;
+import ie.atu.dbTables.dbMusic;
 import ie.atu.jdbc.dbConnection;
 import ie.atu.dbTables.dbStationary;
 import java.sql.Connection;
@@ -265,12 +266,116 @@ public class MagnoliaApp {
 
 
                 }
-                //MUSIC MENU
-                if (libraryMenu == 3) {
-                    System.out.println("\nPlease select from the following options: ");
-                    System.out.println("---[MUSIC]---\n1. Add new music to database\n2. Edit existing items\n3. Checkout item\n4. Check available music\n\nEnter[1 , 2 , 3 , 4]");
-                    userInput = scanner.next();
+            //MUSIC MENU
+            if(libraryMenu == 3) {
+                String refID;
+                String refColumn;
+                int stringSize;
+                System.out.println("\nPlease select from the following options: ");
+                System.out.println("---[MUSIC]---\n1. Add new music to database\n2. Edit existing music\n3. Checkout music\n4. Check available music\n5. Delete music\n6. Back to Selection\n\nEnter[1 , 2 , 3 , 4, 5, 6]");
+                String musicInput = scanner.next();
+                switch (musicInput) {
+                    case "1": //Add new Music
+                        System.out.println("To add new music to the database, please input the following: ");
+                        System.out.print("Track name: ");
+                        String track = scanner.next();
+                        System.out.print("\nGenre: ");
+                        String genre = scanner.next();
+                        System.out.print("\nArtist: ");
+                        String artist = scanner.next();
+                        System.out.print("\nPublication date: ");
+                        String publication = scanner.next();
+                        dbMusic newMusic = new dbMusic(connection, track, genre, artist, publication, false);
+                        newMusic.addItem();
+                        break;
+                    case "2": //Edit Existing Data
+                        System.out.println("To edit an existing Music in the database, please input the following: ");
+                        System.out.print("Input either name of the music track or music ID you want to edit: ");
+                        refID = scanner.next();
+                        stringSize = refID.length();
+                        if (stringSize <= 2){
+                            refColumn = "id";
+                        } else {
+                            refColumn = "name";
+                        }
+                        System.out.print("\nInformation to edit(track name, genre, artist, publication): ");
+                        String columnToChange = scanner.next();
+                        System.out.print("\nInput the updated information: ");
+                        String newInfo = scanner.next();
+                        dbMusic updateMusic = new dbMusic(connection);
+                        updateMusic.editItem(columnToChange,newInfo,refColumn,refID);
+                        break;
+                    case "3": //Checkout Music
+                        System.out.print("Input the track name or ID no. of the music to check out: ");
+                        refID = scanner.next();
+                        stringSize = refID.length();
+                        if(stringSize <= 2) {
+                            refColumn = "id";
+                        } else {
+                            refColumn = "track";
+                        }
+                        dbMusic checkoutMusic = new dbMusic(connection);
+                        checkoutMusic.checkout(refColumn,refID);
+                        break;
+                    case "4": //Check Available Music
+                        System.out.println("\nPlease select from the following: ");
+                        System.out.println("1. All Music Tracks in database\n2. Specific Music search");
+                        dbMusic availableMusic = new dbMusic(connection);
+                        String rentedInput = scanner.next();
+                        switch (rentedInput) {
+                            case "1":
+                                System.out.println("Please select from the following: ");
+                                System.out.println("1. Show available Music\n2. Show rented Music\n3. Show All");
+                                rentedInput = scanner.next();
+                                if(rentedInput.equals("1")) {
+                                    availableMusic.isAvailable();
+                                } else if(rentedInput.equals("2")) {
+                                    availableMusic.toRent();
+                                } else {
+                                    availableMusic.showAll();
+                                }
+                                break;
+                            case "2":
+                                System.out.print("Input the track name or ID no. of the music to view: ");
+                                refID = scanner.next();
+                                stringSize = refID.length();
+                                if(stringSize <= 2) {
+                                    refColumn = "id";
+                                } else {
+                                    refColumn = "name";
+                                }
+                                availableMusic.isAvailable(refColumn,refID);
+                                break;
+                            default:
+                                System.out.println("Invalid Selection.");
+                                System.out.println("\nPlease select from the following: ");
+                                System.out.println("1. All Music in database\n2. Specific Music Track search");
+                                break;
+                        }
+                        break;
+
+                    case "5": //Delete Music from database
+                        System.out.println("Input the track name or ID no. of the music to DELETE from database.");
+                        System.out.println("NOTE: THIS CANNOT BE UNDONE!");
+                        dbMusic removeMusic = new dbMusic(connection);
+                        refID = scanner.next();
+                        stringSize = refID.length();
+                        if(stringSize <= 2) {
+                            refColumn = "id";
+                        } else {
+                            refColumn = "track";
+                        }
+                        removeMusic.deleteItem(refColumn,refID);
+                        break;
+                    case "6": //return to main menu
+                        libraryMenu = 0;
+                        break;
+                    default:
+                        System.out.println("\nInvalid entry.\nPlease select from the following options: ");
+                        System.out.println("---[MUSIC]---\n1. Add new music to database\n2. Edit existing music\n3. Checkout music\n4. Check available musics\n5. Delete music\n\nEnter[1 , 2 , 3 , 4 , 5]");
+                        break;
                 }
+            }
                 //COMPUTER MENU
                 if (libraryMenu == 4) {
                     System.out.println("\nPlease select from the following options: ");
