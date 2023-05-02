@@ -93,7 +93,7 @@ public class dbMusic implements dbMethods{
     // Checking out Music for rent
     @Override
     public void checkout(String refColumn, String refID, int user_id){
-        String updateSQL = "UPDATE music SET rented = 1 WHERE " + refColumn + " = \"" + refID + "\"";
+        String updateSQL = "UPDATE music SET rented = 1, user_id = " + user_id + " WHERE " + refColumn + " = \"" + refID + "\"";
 
         try {
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
@@ -126,6 +126,19 @@ public class dbMusic implements dbMethods{
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    public void returnMusic(String refColumn, String refID) { //checkout music for rent
+        String updateSQL = "UPDATE music SET rented = 0, user_id = NULL WHERE " + refColumn + " = " + refID;
+
+        try {
+            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
+            int rowsUpdated = updateStatement.executeUpdate();
+            System.out.println("Rows updated: " + rowsUpdated);
+            updateStatement.close();
+        } catch(SQLException ex) {
+            System.out.println("[ERROR] Music return failed.");
+            ex.printStackTrace();
         }
     }
     @Override

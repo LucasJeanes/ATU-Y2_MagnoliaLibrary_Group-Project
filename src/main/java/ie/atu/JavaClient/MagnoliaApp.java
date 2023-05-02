@@ -25,6 +25,9 @@ public class MagnoliaApp {
         String userInput = "0";
         while (!userInput.equals("q")) {
             System.out.println("\n\nWelcome to the MAGNOLIA Library Terminal.\n");
+
+
+
             System.out.println("Please select from the following options: ");
             System.out.println("---[MENU]---\n1. Books\n2. Stationary\n3. Music\n4. Computers\n\nEnter[1 , 2 , 3 , 4]");
             userInput = scanner.next();
