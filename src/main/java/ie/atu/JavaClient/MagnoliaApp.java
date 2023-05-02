@@ -1,6 +1,7 @@
 package ie.atu.JavaClient;
 
 import ie.atu.dbTables.dbBooks;
+import ie.atu.dbTables.dbComputer;
 import ie.atu.dbTables.dbMusic;
 import ie.atu.jdbc.dbConnection;
 import ie.atu.dbTables.dbStationary;
@@ -378,11 +379,117 @@ public class MagnoliaApp {
             }
                 //COMPUTER MENU
                 if (libraryMenu == 4) {
+                    String refID;
+                    String refColumn;
+                    int stringSize;
+
                     System.out.println("\nPlease select from the following options: ");
                     System.out.println("---[COMPUTERS]---\n1. Add new computer to database\n2. Edit existing items\n3. Book a computer\n4. Check available computers\n\nEnter[1 , 2 , 3 , 4]");
-                    userInput = scanner.next();
+                    String ComputerInput = scanner.next();
                     //Add switch case for class specific methods
+                    switch(ComputerInput){
+                        case "1" -> { //Add new computer
+                            System.out.println("To add a new Computer to the database, please input the following: ");
+                            System.out.print("Computer name: ");
+                            String name = scanner.nextLine();
+                            System.out.print("\nBrand: ");
+                            String brand = scanner.nextLine();
+                            System.out.print("\ndetails: ");
+                            String details = scanner.nextLine();
+                            System.out.print("\nmemory: ");
+                            String memory = scanner.nextLine();
+
+                            dbComputer newComputer = new dbComputer(connection, name, brand, details, memory, false);
+                            newComputer.addItem();
+                        }
+                        case "2" -> { //Edit existing data
+                            System.out.println("To edit an existing Computer in the database, please input the following: ");
+                            System.out.print("Input either name of the Computer or Computer ID you want to edit: ");
+                            refID = scanner.next();
+                            stringSize = refID.length();
+                            if (stringSize <= 2) {
+                                refColumn = "id";
+                            } else {
+                                refColumn = "name";
+                            }
+                            System.out.print("\nInformation to edit(name, brand, details, memory): ");
+                            String columnToChange = scanner.next();
+                            System.out.print("\nInput the updated information: ");
+                            String newInfo = scanner.next();
+                            dbComputer updateComputer = new dbComputer(connection);
+                            updateComputer.editItem(columnToChange, newInfo, refColumn, refID);
+                        }
+                        case "3" -> { //Checkout Computer
+                            System.out.print("Input the name or ID no. of the Computer to check out: ");
+                            refID = scanner.next();
+                            stringSize = refID.length();
+                            if (stringSize <= 2) {
+                                refColumn = "id";
+                            } else {
+                                refColumn = "name";
+                            }
+                            dbComputer checkoutComputer = new dbComputer(connection);
+                            checkoutComputer.checkout(refColumn, refID);
+                        }
+                        case "4" -> { //Check available Computer
+                            System.out.println("\nPlease select from the following: ");
+                            System.out.println("1. All Computer in database\n2. Specific Computer search");
+                            dbComputer availableComputer = new dbComputer(connection);
+                            String rentedInput = scanner.next();
+                            switch (rentedInput) {
+                                case "1" -> {
+                                    System.out.println("Please select from the following: ");
+                                    System.out.println("1. Show available Computer\n2. Show rented Computer\n3. Show All");
+                                    rentedInput = scanner.next();
+                                    if (rentedInput.equals("1")) {
+                                        availableComputer.isAvailable();
+                                    } else if (rentedInput.equals("2")) {
+                                        availableComputer.isRented();
+                                    } else {
+                                        availableComputer.showAll();
+                                    }
+                                }
+                                case "2" -> {
+                                    System.out.print("Input the name or ID no. of the Computer to view: ");
+                                    refID = scanner.next();
+                                    stringSize = refID.length();
+                                    if (stringSize <= 2) {
+                                        refColumn = "id";
+                                    } else {
+                                        refColumn = "name";
+                                    }
+                                    availableComputer.isAvailable(refColumn, refID);
+                                }
+                                default -> {
+                                    System.out.println("Invalid Selection.");
+                                    System.out.println("\nPlease select from the following: ");
+                                    System.out.println("1. All Computer in database\n2. Specific Computer search");
+                                }
+                            }
+                        }
+                        case "5" -> {   //DELETE Computer FROM DB
+                            System.out.println("Input the name or ID no. of the Computer to DELETE from database.");
+                            System.out.println("NOTE: THIS CANNOT BE UNDONE");
+                            dbComputer removeComputer = new dbComputer(connection);
+                            refID = scanner.next();
+                            stringSize = refID.length();
+                            if (stringSize <= 2) {
+                                refColumn = "id";
+                            } else {
+                                refColumn = "name";
+                            }
+                            removeComputer.deleteItem(refColumn, refID);
+                        }
+                        case "6" -> //Return to main menu
+                                libraryMenu = 0;
+                        default -> {
+                            System.out.println("\nInvalid entry.\nPlease select from the following options: ");
+                            System.out.println("---[Computer]---\n1. Add new Computer to database\n2. Edit existing Computers\n3. Checkout Computer\n4. Check available Computers\n5. Delete Computer\n\nEnter[1 , 2 , 3 , 4 , 5]");
+                        }
+
+                    }
                 }
+
             }
         }
     }

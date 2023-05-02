@@ -23,7 +23,7 @@ public class BooksTest {
         dbBooks testBook = new dbBooks(connection,"testName", "testAuthor", "9999", false);
         testBook.addItem();
         try (Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM book WHERE publication = 9999")) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM book WHERE publication = 5999")) {
 
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
