@@ -1,11 +1,9 @@
 package ie.atu.dbTables;
 
-import com.microsoft.sqlserver.jdbc.ISQLServerConnection;
-
 import java.sql.*;
 
 public class dbComputer implements dbMethods{
-    public String ComputerColoumn = "name, brand, details, memory, price, rented";
+    public String ComputerColoumns = "name, brand, details, memory, price, rented";
     private String name;
     private String brand;
     private String details;
@@ -13,6 +11,10 @@ public class dbComputer implements dbMethods{
     private String price;
     private boolean rented;
     private Connection connection;
+
+    public dbComputer() {
+
+    }
 
     public dbComputer(Connection connection) {
         this.connection = connection;
@@ -32,23 +34,24 @@ public class dbComputer implements dbMethods{
     @Override
     public void addItem(){
 
-        String addComp = "INSERT INTO Computer VALUES (?,?,?,?,?,?)";
+        String selectSQL = "INSERT INTO Computer(name, brand, details, memory, price, rented) VALUES (?,?,?,?,?,?)";
 
         try {
             ////String selectSQL = "INSERT INTO ? VALUES (?, ?, ?, ?)";
             // Insert a new record into the "users" table
-            PreparedStatement insertStatement = connection.prepareStatement(addComp);
+            PreparedStatement insertStatement = connection.prepareStatement(selectSQL);
             //insertStatement.setString(1,insertTable);
             insertStatement.setString(1,name);
             insertStatement.setString(2,brand);
             insertStatement.setString(3,details);
             insertStatement.setString(4,memory);
             insertStatement.setString(5,price);
-            insertStatement.setString(6, String.valueOf(rented));
+            insertStatement.setBoolean(6,rented);
             //int row = insertStatement.executeUpdate();
 
             int inserted = (insertStatement.executeUpdate());
-            System.out.println("The following has successfully been inserted: " + inserted);
+            System.out.println("New Computer has successfully been inserted: " + inserted);
+            insertStatement.close();
         } catch (SQLException ex) {
 
             System.out.println("Record insert failed.");
@@ -59,17 +62,18 @@ public class dbComputer implements dbMethods{
     ///////Deleting columns/rows
     @Override
     public void deleteItem(String refColumn,String refID){
-        String deleteComp = "DELETE FROM Computer WHERE " + refColumn + " = " + refID;
+        String deleteSQL = "DELETE FROM Computer WHERE " + refColumn + " = " + refID;
 
         try{
-            PreparedStatement deleteStatement = connection.prepareStatement (deleteComp);
+            PreparedStatement deleteStatement = connection.prepareStatement (deleteSQL);
             //deleteStatement.setString(1,deleteTable);
             //deleteStatement.setString(2,deleteColumn);
 
             //deleteStatement.setString(3,refID);
 
-            int rowsDeleted = (deleteStatement.executeUpdate(deleteStatement.toString()));
+            int rowsDeleted = (deleteStatement.executeUpdate());
             System.out.println("Computer removed: " + rowsDeleted);
+            deleteStatement.close();
         } catch (SQLException e){
             System.out.println("Rows failed delete");
             e.printStackTrace();
@@ -79,13 +83,13 @@ public class dbComputer implements dbMethods{
     @Override
     /////////Updating tables/////
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID){
-        String updateComp = "UPDATE Computer SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
+        String updateSQL = "UPDATE Computer SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
 
         try
         {
             //String updateSQL = "UPDATE Books SET name = ? WHERE " + refColumn + " = ?";
             //ISQLServerConnection connection = null;
-            PreparedStatement updateStatement = connection.prepareStatement(updateComp);
+            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
 
             //updateStatement.setString(1,TableName);
 
@@ -95,7 +99,7 @@ public class dbComputer implements dbMethods{
 
             int rowsUpdated = updateStatement.executeUpdate();
             System.out.println("Rows updated: " + rowsUpdated);
-
+            updateStatement.close();
 
 
         } catch (SQLException e) {
@@ -106,24 +110,22 @@ public class dbComputer implements dbMethods{
 
 
     }
-    @Override
-    public void isAvailable(String refColumn,String refID) {
-        String availabilityCheckSQL = "SELECT * FROM Computer WHERE (rented = 0 AND " + refColumn + " = " + refID + ")";
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
+    public void checkout(String refColumn,String refID) { //checkout book for rent
+        //String rentColumn = "rented";
+        //String checkedOut = "1";
+        String updateSQL = "UPDATE Computer SET rented = 1 WHERE " + refColumn + " = " + refID;
 
-            while (resultSet.next()) {
-                String compID = resultSet.getString("id");
-                String name = resultSet.getString("name");
-                String brand = resultSet.getString("brand");
-                String details = resultSet.getString("details");
-                String price = resultSet.getString("price");
-                System.out.println(compID + ": " + name + " | " + brand + " | " + details + " | " + price + "\n");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        try {
+            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
+            int rowsUpdated = updateStatement.executeUpdate();
+            System.out.println("Rows updated: " + rowsUpdated);
+            updateStatement.close();
+        } catch(SQLException ex) {
+            System.out.println("[ERROR] Computer checkout failed.");
+            ex.printStackTrace();
         }
     }
+
     @Override
     public void isAvailable() {
         String availabilityCheckSQL = "SELECT * FROM Computer WHERE rented = 0";
@@ -136,13 +138,66 @@ public class dbComputer implements dbMethods{
                 String brand = resultSet.getString("brand");
                 String details = resultSet.getString("details");
                 String price = resultSet.getString("price");
-                System.out.println(compID + ": " + name + " | " + brand + " | " + details + " | " + price + "\n");
+                String rented = resultSet.getString("rented");
+                if(rented.equals("1")) {
+                    rented = "Rented";
+                } else {
+                    rented = "In Stock";
+                }
+                System.out.println(compID + ": " + name + " | " + brand + " | " + details + " | " + price + " | " + rented);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    @Override
+    public void isAvailable(String refColumn,String refID) {
+        String availabilityCheckSQL = "SELECT * FROM Computer WHERE " + refColumn + " = " + refID ;
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
 
+            while (resultSet.next()) {
+                String compID = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                String brand = resultSet.getString("brand");
+                String details = resultSet.getString("details");
+                String price = resultSet.getString("price");
+                String rented = resultSet.getString("rented");
+                if(rented.equals("1")) {
+                    rented = "Rented";
+                } else {
+                    rented = "In Stock";
+                }
+                System.out.println(compID + ": " + name + " | " + brand + " | " + details + " | " + price + " | " + rented);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void showAll() { //Show all available items
+        String availabilityCheckSQL = "SELECT * FROM Computer";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
+
+            while (resultSet.next()) {
+                String compID = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                String brand = resultSet.getString("brand");
+                String details = resultSet.getString("details");
+                String memory = resultSet.getString("memory");
+                String rented = resultSet.getString("rented");
+
+                if(rented.equals("1")) {
+                    rented = "Rented";
+                } else {
+                    rented = "In Stock";
+                }
+                System.out.println(compID + ": " + name + " | " + brand + " | " + details + " | " + price + " | " + rented);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void purchaseItem(String refColumn, String refID) {
 
