@@ -3,7 +3,7 @@ package ie.atu.dbTables;
 import java.sql.*;
 
 public class dbComputer implements dbMethods{
-    public String ComputerColoumns = "name, brand, details, memory, price, rented";
+    public String ComputerColumns = "name, brand, details, memory, price, rented";
     private String name;
     private String brand;
     private String details;
@@ -129,6 +129,11 @@ public class dbComputer implements dbMethods{
         }
     }
 
+
+    public void isStatAvailable() {
+
+    }
+
     @Override
     public void isAvailable() {
         String availabilityCheckSQL = "SELECT * FROM Computer WHERE rented = 0";
@@ -153,6 +158,16 @@ public class dbComputer implements dbMethods{
             e.printStackTrace();
         }
     }
+
+    public void purchaseItem(String refColumn, String refID) {
+
+    }
+
+
+    public void purchaseItem(String refColumn, String refID, int pnum) {
+
+    }
+
     @Override
     public void isAvailable(String refColumn,String refID) {
         String availabilityCheckSQL = "SELECT * FROM Computer WHERE " + refColumn + " = " + refID ;
@@ -225,10 +240,7 @@ public class dbComputer implements dbMethods{
             e.printStackTrace();
         }
     }
-    @Override
-    public void purchaseItem(String refColumn, String refID) {
 
-    }
 
     @Override
     public void toRent() {
