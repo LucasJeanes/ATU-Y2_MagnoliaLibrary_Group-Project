@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UsersTest {
     static Connection connection;
+    int user_id = 0;
 
     static {
         dbConnection dbConnection = new dbConnection();
@@ -30,7 +31,7 @@ public class UsersTest {
     @Test
     @Order(1)
     public void testAddItem() {
-        dbUsers testUser = new dbUsers(connection,"admin", "Magnolia", "9999999999", 99, "admin");
+        dbUsers testUser = new dbUsers(connection,"testName", "testAddress", "9999999999", 99, "admin");
         testUser.addItem();
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM Users WHERE name = \"testName\"")) {
@@ -51,7 +52,7 @@ public class UsersTest {
         String newInfo = "NewAddress";
         String refColumn = "name";
         String refID = "testName";
-        dbUsers testUser = new dbUsers(connection,"testName", "testAdress", "9999999999", 99, "template");
+        dbUsers testUser = new dbUsers(connection,"testName", "testAddress", "9999999999", 99, "template");
         testUser.editItem(columnToChange, newInfo, refColumn, refID);
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM users WHERE name = \"testName\"")) {
@@ -67,13 +68,35 @@ public class UsersTest {
 
     @Test
     @Order(3)
-    public void testDeleteItem() throws SQLException {
-        dbUsers testUser = new dbUsers(connection,"testName", "testAdress", "9999999999", 99, "template");
+    public void testCheckRented() {
+        dbUsers testUser = new dbUsers(connection,"testName", "testAddress", "9999999999", 99, "template");
+        dbBooks testBook = new dbBooks(connection,"testName", "testAuthor", "9999", false);
+        testBook.addItem();
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM users WHERE name = \"testName\"")) {
 
+            while (resultSet.next()) {
+                String userID = resultSet.getString("user_id");
+                user_id = Integer.parseInt(userID);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        testBook.checkout("publication","9999", user_id);
+        testUser.checkRented(user_id);
+    }
+
+    @Test
+    @Order(4)
+    public void testDeleteItem() throws SQLException {
+        dbUsers testUser = new dbUsers(connection,"testName", "testAddress", "9999999999", 99, "template");
+        dbBooks testBook = new dbBooks(connection,"testName", "testAuthor", "9999", false);
+        testBook.addItem();
+        testBook.returnBook("publication","9999");
         testUser.deleteItem("name","testName");
 
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM book WHERE name = \"testName\"")) {
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM users WHERE name = \"testName\"")) {
 
             while (resultSet.next()) {
                 String name = resultSet.getString("name");

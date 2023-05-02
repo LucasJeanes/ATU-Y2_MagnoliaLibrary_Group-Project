@@ -23,7 +23,7 @@ public class BooksTest {
         dbBooks testBook = new dbBooks(connection,"testName", "testAuthor", "9999", false);
         testBook.addItem();
         try (Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM book WHERE publication = 5999")) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM book WHERE publication = 9999")) {
 
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
@@ -38,22 +38,42 @@ public class BooksTest {
     @Order(2)
     public void testCheckoutBook() {
         dbBooks testBook = new dbBooks(connection,"testName", "testAuthor", "9999", false);
-        testBook.checkout("publication","9999", 0);
+        testBook.checkout("publication","9999", 5);
 
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM book WHERE publication = 9999")) {
 
             while (resultSet.next()) {
                 String rented = resultSet.getString("rented");
+                String userID = resultSet.getString("user_id");
+                assertEquals("5",userID);
                 assertEquals("1",rented);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
     @Test
     @Order(3)
+    public void testReturnBook() {
+        dbBooks testBook = new dbBooks(connection,"testName", "testAuthor", "9999", false);
+        testBook.returnBook("publication","9999");
+
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM book WHERE publication = 9999")) {
+
+            while (resultSet.next()) {
+                String rented = resultSet.getString("rented");
+                String userID = resultSet.getString("user_id");
+                assertNull(userID);
+                assertEquals("0",rented);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    @Order(4)
     public void testDeleteItem() throws SQLException {
         dbBooks testBook = new dbBooks(connection,"testName", "testAuthor", "9999", false);
 

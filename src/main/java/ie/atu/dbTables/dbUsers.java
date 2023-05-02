@@ -1,8 +1,6 @@
 package ie.atu.dbTables;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class dbUsers implements dbMethods {
     private String name;
@@ -79,6 +77,27 @@ public class dbUsers implements dbMethods {
             e.printStackTrace();
         }
     }
+    public void checkRented(int userID) {
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT id, name, rented, user_id FROM book WHERE user_id = " + userID)) {
+
+            while (resultSet.next()) {
+                String book_id = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                String rented = resultSet.getString("rented");
+                if(rented.equals("1")) {
+                    rented = "Rented";
+                } else {
+                    rented = "In Stock";
+                }
+                String user_id = resultSet.getString("user_id");
+                System.out.println(book_id + ": " + name + " | " + rented + " | " + user_id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void checkout(String refColumn, String refID, int userID) {
@@ -92,9 +111,6 @@ public class dbUsers implements dbMethods {
     }
 
     public void purchaseItem(String refColumn, String refID) {
-    }
-
-    public void checkout(String refColumn, String refID) {
     }
 
     public void toRent() {
