@@ -123,6 +123,12 @@ public class dbStationary implements dbMethods{
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void checkout(String refColumn, String refID) {
+
+    }
+
     @Override
     public void isAvailable() {
         String availabilityCheckSQL = "SELECT * FROM Stationary WHERE stock = 0";
