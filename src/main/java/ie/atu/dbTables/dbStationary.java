@@ -41,6 +41,11 @@ public class dbStationary implements dbMethods{
     }
 
     @Override
+    public void checkout(String refColumn, String refID, int userID) {
+
+    }
+
+    @Override
     public void addItem(){
         String selectSQL = "INSERT INTO stationary (name,description,price,user_discount,stock) VALUES (?, ?, ?, ?, ?)";
         try {
@@ -66,7 +71,7 @@ public class dbStationary implements dbMethods{
 
     @Override
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID) {
-        String updateSQL = "UPDATE stationary SET name = ? WHERE " + name + " = ?";
+        String updateSQL = "UPDATE stationary SET " + columnToChange + " = \"" + newInfo + "\" WHERE " + refColumn + " = \"" + refID + "\"";
         try
         {
 
@@ -100,10 +105,6 @@ public class dbStationary implements dbMethods{
     }
     }
 
-    @Override
-    public void checkout(String refColumn, String refID) {
-
-    }
 
     @Override
     public void toRent() {

@@ -89,8 +89,10 @@ public class dbMusic implements dbMethods{
         }
     }
 
+
     // Checking out Music for rent
-    public void checkout(String refColumn, String refID){
+    @Override
+    public void checkout(String refColumn, String refID, int user_id){
         String updateSQL = "UPDATE music SET rented = 1 WHERE " + refColumn + " = \"" + refID + "\"";
 
         try {

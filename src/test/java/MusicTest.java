@@ -45,7 +45,7 @@ public class MusicTest {
     @Order(2)
     public void testCheckoutMusic(){
         dbMusic testMusic = new dbMusic(connection, "testTrackName", "testGenre","testArtist", "9999", true );
-        testMusic.checkout("publication", "9999");
+        testMusic.checkout("publication", "9999", 0);
 
         try(Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM music WHERE publication = 9999")){
