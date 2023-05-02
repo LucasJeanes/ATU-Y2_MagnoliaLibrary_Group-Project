@@ -398,24 +398,26 @@ public class MagnoliaApp {
                             String details = scanner.nextLine();
                             System.out.print("\nmemory: ");
                             String memory = scanner.nextLine();
+                            System.out.print("\nprice: ");
+                            String price = scanner.nextLine();
 
-                            dbComputer newComputer = new dbComputer(connection, name, brand, details, memory, false);
+                            dbComputer newComputer = new dbComputer(connection, name, brand, details, memory,price, false);
                             newComputer.addItem();
                         }
                         case "2" -> { //Edit existing data
                             System.out.println("To edit an existing Computer in the database, please input the following: ");
                             System.out.print("Input either name of the Computer or Computer ID you want to edit: ");
-                            refID = scanner.next();
+                            refID = scanner.nextLine();
                             stringSize = refID.length();
                             if (stringSize <= 2) {
                                 refColumn = "id";
                             } else {
                                 refColumn = "name";
                             }
-                            System.out.print("\nInformation to edit(name, brand, details, memory): ");
-                            String columnToChange = scanner.next();
+                            System.out.print("\nInformation to edit(name, brand, details, memory, price): ");
+                            String columnToChange = scanner.nextLine();
                             System.out.print("\nInput the updated information: ");
-                            String newInfo = scanner.next();
+                            String newInfo = scanner.nextLine();
                             dbComputer updateComputer = new dbComputer(connection);
                             updateComputer.editItem(columnToChange, newInfo, refColumn, refID);
                         }
