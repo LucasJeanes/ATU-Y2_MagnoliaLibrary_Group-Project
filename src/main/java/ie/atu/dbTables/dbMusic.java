@@ -102,6 +102,12 @@ public class dbMusic implements dbMethods{
             ee.printStackTrace();
         }
     }
+
+    @Override
+    public void isStatAvailable() {
+
+    }
+
     @Override
     public void isAvailable(String refColumn,String refID) {
         String availabilityCheckSQL = "SELECT * FROM music WHERE " + refColumn + " = " + refID;
@@ -152,9 +158,11 @@ public class dbMusic implements dbMethods{
     }
 
     @Override
-    public void purchaseItem(String refColumn, String refID) {
-        
+    public void purchaseItem(String refColumn, String refID, int pnum) {
+
     }
+
+
 
     public void toRent() { //Show all available items
         String availabilityCheckSQL = "SELECT * FROM music WHERE rented = 1";

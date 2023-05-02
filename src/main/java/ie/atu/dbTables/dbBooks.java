@@ -88,6 +88,12 @@ public class dbBooks implements dbMethods{
             ex.printStackTrace();
         }
     }
+
+    @Override
+    public void isStatAvailable() {
+
+    }
+
     @Override
     public void isAvailable(String refColumn,String refID) {    //If there is a specific item user wants to check
         String availabilityCheckSQL = "SELECT * FROM book WHERE " + refColumn + " = " + refID;
@@ -136,9 +142,10 @@ public class dbBooks implements dbMethods{
     }
 
     @Override
-    public void purchaseItem(String refColumn, String refID) {
+    public void purchaseItem(String refColumn, String refID, int pnum) {
 
     }
+
 
     public void isRented() { //Show all available items
         String availabilityCheckSQL = "SELECT * FROM book WHERE rented = 1";

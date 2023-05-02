@@ -130,6 +130,11 @@ public class dbComputer implements dbMethods{
     }
 
     @Override
+    public void isStatAvailable() {
+
+    }
+
+    @Override
     public void isAvailable() {
         String availabilityCheckSQL = "SELECT * FROM Computer WHERE rented = 0";
         try (Statement statement = connection.createStatement();
@@ -153,6 +158,12 @@ public class dbComputer implements dbMethods{
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void purchaseItem(String refColumn, String refID, int pnum) {
+
+    }
+
     @Override
     public void isAvailable(String refColumn,String refID) {
         String availabilityCheckSQL = "SELECT * FROM Computer WHERE " + refColumn + " = " + refID ;
@@ -225,10 +236,7 @@ public class dbComputer implements dbMethods{
             e.printStackTrace();
         }
     }
-    @Override
-    public void purchaseItem(String refColumn, String refID) {
 
-    }
 
 
     //Getters and setters

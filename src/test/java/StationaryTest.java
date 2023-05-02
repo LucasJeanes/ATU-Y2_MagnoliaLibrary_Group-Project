@@ -36,6 +36,31 @@ public class StationaryTest {
     }
     @Test
     @Order(2)
+    public void testStockCheckItem() {
+        dbStationary testStationary = new dbStationary(connection,"testName", "testDescription", 999,10,999 );
+        testStationary.checkout("stock","999");
+
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM stationary WHERE stock <> 0")) {
+
+            while (resultSet.next()) {
+                String stock = resultSet.getString("stock");
+                assertEquals(true, Integer.parseInt(stock) != 0);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    @Order(3)
+    public void purchaseTest() {
+        dbStationary testStationary = new dbStationary(connection,"testName", "testDescription", 999,10,999 );
+
+
+    }
+
+    @Test
+    @Order(4)
     public void testDeleteItem() throws SQLException {
         dbStationary testStationary = new dbStationary(connection,"testName", "testDescription", 99, 99, 999);
 
