@@ -161,6 +161,7 @@ public class MagnoliaApp {
             if (libraryMenu == 2) {
                 String refID;
                 String refColumn;
+                String pnum;
                 int stringSize;
                 System.out.println("\nPlease select from the following options: ");
                 System.out.println("---[STATIONARY]---\n1. Add new stationary to database\n2. Edit existing items\n3. Buy item\n4. check stock\n5. delete item\n\nEnter[1 , 2 , 3 , 4, 5]");
@@ -194,61 +195,49 @@ public class MagnoliaApp {
                         }
                         System.out.print("\nInformation to edit(name, description, price, user_discount, stock): ");
                         String columnToChange = scanner.next();
-                        scanner.nextLine();
                         System.out.print("\nInput the updated information: ");
+                        scanner.nextLine();
                         String newInfo = scanner.nextLine();
                         dbStationary updateStationary = new dbStationary(connection);
                         updateStationary.editItem(columnToChange, newInfo, refColumn, refID);
                         break;
                     case "3":
                         System.out.print("Input the name or ID no. of the stationary for purchase: ");
-                        refID = scanner.next();
+                        scanner.nextLine();
+                        refID = scanner.nextLine();
+                        System.out.print("Input the number of items for purchase: ");
+                       // scanner.nextLine();
+                        pnum = scanner.nextLine();
                         stringSize = refID.length();
                         if (stringSize <= 2) {
                             refColumn = "id";
                         } else {
                             refColumn = "name";
                         }
-                        dbStationary checkoutStationary = new dbStationary(connection);
-                        checkoutStationary.purchaseItem(refColumn, refID);
+                        dbStationary purchaseStationary = new dbStationary(connection);
+                        purchaseStationary.purchaseItem(refColumn, refID, Integer.parseInt(pnum));
                         break;
                     case "4":
                         System.out.println("\nPlease select from the following: ");
-                        System.out.println("1. All stationary in database\n2. Specific stationary search");
+                        System.out.println("1. All stationary in database\n2. All in Stock Items in database");
                         dbStationary availableStationary = new dbStationary(connection);
                         String availableInput = scanner.next();
                         switch (availableInput) {
                             case "1":
-                                System.out.println("Please select from the following: ");
-                                System.out.println("1. Show available stationary\n2. Show available stationary\n3. Show All");
-                                availableInput = scanner.next();
-                                if (availableInput.equals("1")) {
-                                    availableStationary.isAvailable();
-                                } else if (availableInput.equals("2")) {
-                                    //availableStationary.isRented();
-                                } else {
-                                    //availableStationary.showAll();
-                                }
+                                    availableStationary.StatshowAll();
                                 break;
                             case "2":
-                                System.out.print("Input the name or ID no. of the stationary to view: ");
-                                refID = scanner.next();
-                                stringSize = refID.length();
-                                if (stringSize <= 2) {
-                                    refColumn = "id";
-                                } else {
-                                    refColumn = "name";
-                                }
-                                availableStationary.isAvailable(refColumn, refID);
+                                availableStationary.isStatAvailable();
                                 break;
                             default:
                                 System.out.println("Invalid Selection.");
                                 System.out.println("\nPlease select from the following: ");
-                                System.out.println("1. All stationary in database\n2. Specific stationary search");
+                                System.out.println("1. All stationary in database\n2. All in Stock Items in database");
                                 break;
 
 
                         }
+                        break;
                     case "5":
                         System.out.println("Input the name or ID no. of the stationary to DELETE from database.");
                         System.out.println("NOTE: THIS CANNOT BE UNDONE");
