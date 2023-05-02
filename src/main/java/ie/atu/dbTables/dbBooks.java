@@ -140,6 +140,11 @@ public class dbBooks implements dbMethods{
 
     }
 
+    @Override
+    public void toRent() {
+
+    }
+
     public void isRented() { //Show all available items
         String availabilityCheckSQL = "SELECT * FROM book WHERE rented = 1";
         try (Statement statement = connection.createStatement();

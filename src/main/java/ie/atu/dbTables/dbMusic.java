@@ -59,7 +59,7 @@ public class dbMusic implements dbMethods{
     //For Updating Existing Music Data
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID){
 
-        String updateSQL = "UPDATE Music SET" + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
+        String updateSQL = "UPDATE music SET " + columnToChange + " = \"" + newInfo + "\" WHERE " + refColumn + " = " + refID;
         try
         {
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);

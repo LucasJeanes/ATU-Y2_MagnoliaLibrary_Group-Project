@@ -8,4 +8,7 @@ public interface dbMethods {
     void isAvailable();
     void purchaseItem(String refColumn,String refID);
 
+    void toRent();
+
+
 }
