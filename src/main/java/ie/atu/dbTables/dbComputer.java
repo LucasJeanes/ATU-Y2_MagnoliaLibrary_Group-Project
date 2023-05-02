@@ -82,6 +82,7 @@ public class dbComputer implements dbMethods{
         }
 
     }
+
     @Override
     /////////Updating tables/////
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID){
@@ -112,7 +113,7 @@ public class dbComputer implements dbMethods{
 
 
     }
-    public void checkout(String refColumn,String refID) { //checkout book for rent
+    public void checkout(String refColumn,String refID, int user_id) { //checkout book for rent
         //String rentColumn = "rented";
         //String checkedOut = "1";
         String updateSQL = "UPDATE Computer SET rented = 1 WHERE " + refColumn + " = " + refID;
