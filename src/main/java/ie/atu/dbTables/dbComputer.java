@@ -84,6 +84,21 @@ public class dbComputer implements dbMethods{
     }
 
     @Override
+    public void checkout(String refColumn, String refID, int userID) {
+        String updateSQL = "UPDATE Computer SET rented = 1 WHERE " + refColumn + " = " + refID;
+
+        try {
+            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
+            int rowsUpdated = updateStatement.executeUpdate();
+            System.out.println("Rows updated: " + rowsUpdated);
+            updateStatement.close();
+        } catch(SQLException ex) {
+            System.out.println("[ERROR] Computer checkout failed.");
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
     /////////Updating tables/////
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID){
         String updateSQL = "UPDATE computer SET " + columnToChange + " = \"" + newInfo + "\" WHERE " + refColumn + " = " + refID;
@@ -113,22 +128,6 @@ public class dbComputer implements dbMethods{
 
 
     }
-    public void checkout(String refColumn,String refID, int user_id) { //checkout book for rent
-        //String rentColumn = "rented";
-        //String checkedOut = "1";
-        String updateSQL = "UPDATE Computer SET rented = 1 WHERE " + refColumn + " = " + refID;
-
-        try {
-            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
-            int rowsUpdated = updateStatement.executeUpdate();
-            System.out.println("Rows updated: " + rowsUpdated);
-            updateStatement.close();
-        } catch(SQLException ex) {
-            System.out.println("[ERROR] Computer checkout failed.");
-            ex.printStackTrace();
-        }
-    }
-
 
     public void isStatAvailable() {
 
@@ -242,7 +241,7 @@ public class dbComputer implements dbMethods{
     }
 
 
-    @Override
+
     public void toRent() {
 
     }

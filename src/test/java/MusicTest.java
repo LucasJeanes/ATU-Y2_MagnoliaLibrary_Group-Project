@@ -27,10 +27,10 @@ public class MusicTest {
     @Test
     @Order(1)
     public void testAddItem(){
-        dbMusic testMusic = new dbMusic(connection,"testTrackName", "testGenre", "testArtist", "9998", false);
+        dbMusic testMusic = new dbMusic(connection,"testTrackName", "testGenre", "testArtist", "9999", false);
         testMusic.addItem();
         try(Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM music WHERE publication = 9998")){
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM music WHERE publication = 9999")){
 
             while(resultSet.next()){
                 String track = resultSet.getString("track");
@@ -45,7 +45,7 @@ public class MusicTest {
     @Order(2)
     public void testCheckoutMusic(){
         dbMusic testMusic = new dbMusic(connection, "testTrackName", "testGenre","testArtist", "9999", true );
-        testMusic.checkout("publication", "9999", 0);
+        testMusic.checkout("publication", "9999", 1);
 
         try(Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM music WHERE publication = 9999")){
@@ -58,9 +58,27 @@ public class MusicTest {
             e.printStackTrace();
         }
     }
-
     @Test
     @Order(3)
+    public void testReturnMusic() {
+        dbMusic testMusic = new dbMusic(connection, "testTrackName", "testGenre","testArtist", "9999", true );
+        testMusic.returnMusic("publication","9999");
+
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM music WHERE publication = 9999")) {
+
+            while (resultSet.next()) {
+                String rented = resultSet.getString("rented");
+                String userID = resultSet.getString("user_id");
+                assertNull(userID);
+                assertEquals("0",rented);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    @Order(4)
     public void testDeleteItem() throws SQLException{
         dbMusic testMusic = new dbMusic(connection, "testTrackName", "TestGenre", "TestArtist", "9999",true);
 
