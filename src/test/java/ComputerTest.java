@@ -71,7 +71,7 @@ public class ComputerTest {
     @Order(2)
     public void testCheckoutComputer() {
         dbComputer testComputer = new dbComputer(connection,"MacBookXX1", "testAuthor","great", "deeell","9999", false);
-        testComputer.isAvailable("price","9999");
+        testComputer.checkout("price","9999");
 
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM Computer WHERE price = 9999")) {
