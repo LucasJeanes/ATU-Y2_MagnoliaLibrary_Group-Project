@@ -283,10 +283,10 @@ public class MagnoliaApp {
                         String track = scanner.nextLine();
                         System.out.print("\nGenre: ");
                         String genre = scanner.nextLine();
-                        scanner.nextLine();
+                        //scanner.nextLine();
                         System.out.print("\nArtist: ");
                         String artist = scanner.nextLine();
-                        scanner.nextLine();
+                        //scanner.nextLine();
                         System.out.print("\nPublication date: ");
                         String publication = scanner.next();
                         dbMusic newMusic = new dbMusic(connection, track, genre, artist, publication, false);
@@ -305,10 +305,10 @@ public class MagnoliaApp {
                         }
                         System.out.print("\nInformation to edit(track name, genre, artist, publication): ");
                         String columnToChange = scanner.nextLine();
-                        scanner.nextLine();
+                        //scanner.nextLine();
                         System.out.print("\nInput the updated information: ");
                         String newInfo = scanner.nextLine();
-                        scanner.nextLine();
+                        //scanner.nextLine();
                         dbMusic updateMusic = new dbMusic(connection);
                         updateMusic.editItem(columnToChange,newInfo,refColumn,refID);
                         break;
@@ -351,7 +351,7 @@ public class MagnoliaApp {
                                 if(stringSize <= 2) {
                                     refColumn = "id";
                                 } else {
-                                    refColumn = "name";
+                                    refColumn = "track";
                                 }
                                 availableMusic.isAvailable(refColumn,refID);
                                 break;

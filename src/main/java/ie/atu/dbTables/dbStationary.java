@@ -101,6 +101,11 @@ public class dbStationary implements dbMethods{
     }
 
     @Override
+    public void checkout(String refColumn, String refID) {
+
+    }
+
+    @Override
     public void toRent() {
 
     }
@@ -124,10 +129,10 @@ public class dbStationary implements dbMethods{
         }
     }
 
-    @Override
+  /*  @Override
     public void checkout(String refColumn, String refID) {
 
-    }
+    }*/
 
     @Override
     public void isAvailable() {
