@@ -7,5 +7,6 @@ public interface dbMethods {
     void isAvailable(String refColumn,String refID);
     void isAvailable();
     void purchaseItem(String refColumn,String refID);
+    public void checkout(String refColumn,String refID);
 
 }

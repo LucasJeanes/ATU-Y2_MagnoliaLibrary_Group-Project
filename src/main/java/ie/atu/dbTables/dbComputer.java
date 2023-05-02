@@ -30,6 +30,9 @@ public class dbComputer implements dbMethods{
         this.rented = rented;
     }
 
+    public dbComputer(Connection connection, String name, String brand, String details, String memory, boolean b) {
+    }
+
     /////Inserting new Value
     @Override
     public void addItem(){
@@ -174,6 +177,30 @@ public class dbComputer implements dbMethods{
             e.printStackTrace();
         }
     }
+    public void isRented() { //Show all available items
+        String availabilityCheckSQL = "SELECT * FROM Computer WHERE rented = 1";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
+
+            while (resultSet.next()) {
+                String compID = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                String brand = resultSet.getString("brand");
+                String details = resultSet.getString("details");
+                String memory = resultSet.getString("memory");
+
+                String rented = resultSet.getString("rented");
+                if(rented.equals("1")) {
+                    rented = "Rented";
+                } else {
+                    rented = "In Stock";
+                }
+                System.out.println(compID + ": " + name + " | " + brand + " | " + details + " | " + price + " | " + rented);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public void showAll() { //Show all available items
         String availabilityCheckSQL = "SELECT * FROM Computer";
         try (Statement statement = connection.createStatement();
@@ -245,7 +272,7 @@ public class dbComputer implements dbMethods{
         this.price = price;
     }
 
-    public boolean isRented() {
+    public boolean rented() {
         return rented;
     }
 
