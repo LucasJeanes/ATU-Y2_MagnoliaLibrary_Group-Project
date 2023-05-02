@@ -99,6 +99,12 @@ public class dbStationary implements dbMethods{
         e.printStackTrace();
     }
     }
+
+    @Override
+    public void toRent() {
+
+    }
+
     @Override
     public void isAvailable(String refColumn,String refID) {
         String availabilityCheckSQL = "SELECT * FROM Stationary WHERE (stock = 0 AND " + refColumn + " = " + refID + ")";

@@ -9,4 +9,7 @@ public interface dbMethods {
     void purchaseItem(String refColumn,String refID);
     public void checkout(String refColumn,String refID);
 
+    void toRent();
+
+
 }

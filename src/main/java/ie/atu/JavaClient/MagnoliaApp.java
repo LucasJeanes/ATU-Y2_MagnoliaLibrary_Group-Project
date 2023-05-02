@@ -279,11 +279,14 @@ public class MagnoliaApp {
                     case "1": //Add new Music
                         System.out.println("To add new music to the database, please input the following: ");
                         System.out.print("Track name: ");
-                        String track = scanner.next();
+                        scanner.nextLine();
+                        String track = scanner.nextLine();
                         System.out.print("\nGenre: ");
-                        String genre = scanner.next();
+                        String genre = scanner.nextLine();
+                        scanner.nextLine();
                         System.out.print("\nArtist: ");
-                        String artist = scanner.next();
+                        String artist = scanner.nextLine();
+                        scanner.nextLine();
                         System.out.print("\nPublication date: ");
                         String publication = scanner.next();
                         dbMusic newMusic = new dbMusic(connection, track, genre, artist, publication, false);
@@ -292,23 +295,27 @@ public class MagnoliaApp {
                     case "2": //Edit Existing Data
                         System.out.println("To edit an existing Music in the database, please input the following: ");
                         System.out.print("Input either name of the music track or music ID you want to edit: ");
-                        refID = scanner.next();
+                        scanner.nextLine();
+                        refID = scanner.nextLine();
                         stringSize = refID.length();
                         if (stringSize <= 2){
                             refColumn = "id";
                         } else {
-                            refColumn = "name";
+                            refColumn = "track";
                         }
                         System.out.print("\nInformation to edit(track name, genre, artist, publication): ");
-                        String columnToChange = scanner.next();
+                        String columnToChange = scanner.nextLine();
+                        scanner.nextLine();
                         System.out.print("\nInput the updated information: ");
-                        String newInfo = scanner.next();
+                        String newInfo = scanner.nextLine();
+                        scanner.nextLine();
                         dbMusic updateMusic = new dbMusic(connection);
                         updateMusic.editItem(columnToChange,newInfo,refColumn,refID);
                         break;
                     case "3": //Checkout Music
                         System.out.print("Input the track name or ID no. of the music to check out: ");
-                        refID = scanner.next();
+                        scanner.nextLine();
+                        refID = scanner.nextLine();
                         stringSize = refID.length();
                         if(stringSize <= 2) {
                             refColumn = "id";
@@ -338,7 +345,8 @@ public class MagnoliaApp {
                                 break;
                             case "2":
                                 System.out.print("Input the track name or ID no. of the music to view: ");
-                                refID = scanner.next();
+                                scanner.nextLine();
+                                refID = scanner.nextLine();
                                 stringSize = refID.length();
                                 if(stringSize <= 2) {
                                     refColumn = "id";
@@ -359,7 +367,8 @@ public class MagnoliaApp {
                         System.out.println("Input the track name or ID no. of the music to DELETE from database.");
                         System.out.println("NOTE: THIS CANNOT BE UNDONE!");
                         dbMusic removeMusic = new dbMusic(connection);
-                        refID = scanner.next();
+                        scanner.nextLine();
+                        refID = scanner.nextLine();
                         stringSize = refID.length();
                         if(stringSize <= 2) {
                             refColumn = "id";

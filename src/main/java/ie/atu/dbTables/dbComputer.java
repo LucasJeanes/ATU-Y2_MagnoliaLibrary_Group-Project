@@ -230,6 +230,11 @@ public class dbComputer implements dbMethods{
 
     }
 
+    @Override
+    public void toRent() {
+
+    }
+
 
     //Getters and setters
     public String getName() {
