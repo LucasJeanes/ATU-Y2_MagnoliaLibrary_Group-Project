@@ -94,6 +94,7 @@ public class UsersTest {
         testBook.addItem();
         testBook.returnBook("publication","9999");
         testUser.deleteItem("name","testName");
+        testBook.deleteItem("publication","9999");
 
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM users WHERE name = \"testName\"")) {
