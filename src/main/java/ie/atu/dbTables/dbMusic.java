@@ -59,7 +59,7 @@ public class dbMusic implements dbMethods{
     //For Updating Existing Music Data
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID){
 
-        String updateSQL = "UPDATE music SET " + columnToChange + " = \"" + newInfo + "\" WHERE " + refColumn + " = \"" + refID + "\"";
+        String updateSQL = "UPDATE Music SET" + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
         try
         {
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
@@ -75,7 +75,7 @@ public class dbMusic implements dbMethods{
     //For Deleting an Existing Data
     public void deleteItem(String refColumn, String refID){
 
-        String deleteSQL = "DELETE FROM Music WHERE " + refColumn + " = \"" + refID + "\"";
+        String deleteSQL = "DELETE FROM Music WHERE " + refColumn + "=" + refID;
         try {
             PreparedStatement deleteStatement = connection.prepareStatement (deleteSQL);
             //deleteStatement.setString(2,refColumn);
@@ -89,11 +89,9 @@ public class dbMusic implements dbMethods{
         }
     }
 
-
     // Checking out Music for rent
-    @Override
-    public void checkout(String refColumn, String refID, int user_id){
-        String updateSQL = "UPDATE music SET rented = 1 WHERE " + refColumn + " = \"" + refID + "\"";
+    public void checkout(String refColumn, String refID){
+        String updateSQL = "UPDATE music SET rented = 1 WHERE " + refColumn + " = " + refID;
 
         try {
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
@@ -104,9 +102,15 @@ public class dbMusic implements dbMethods{
             ee.printStackTrace();
         }
     }
+
+    @Override
+    public void isStatAvailable() {
+
+    }
+
     @Override
     public void isAvailable(String refColumn,String refID) {
-        String availabilityCheckSQL = "SELECT * FROM music WHERE " + refColumn + " = \"" + refID + "\"";
+        String availabilityCheckSQL = "SELECT * FROM music WHERE " + refColumn + " = " + refID;
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(availabilityCheckSQL)) {
 
@@ -154,9 +158,11 @@ public class dbMusic implements dbMethods{
     }
 
     @Override
-    public void purchaseItem(String refColumn, String refID) {
+    public void purchaseItem(String refColumn, String refID, int pnum) {
 
     }
+
+
 
     public void toRent() { //Show all available items
         String availabilityCheckSQL = "SELECT * FROM music WHERE rented = 1";

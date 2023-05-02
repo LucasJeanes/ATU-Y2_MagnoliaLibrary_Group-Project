@@ -24,7 +24,7 @@ public class dbBooks implements dbMethods{
     }
     @Override
     public void editItem(String columnToChange, String newInfo, String refColumn, String refID) {
-        String updateSQL = "UPDATE book SET " + columnToChange + " = \"" + newInfo + "\" WHERE " + refColumn + " = " + refID;
+        String updateSQL = "UPDATE Book SET " + columnToChange + " = " + newInfo + " WHERE " + refColumn + " = " + refID;
 
         try {
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
@@ -73,11 +73,10 @@ public class dbBooks implements dbMethods{
             e.printStackTrace();
         }
     }
-    @Override
-    public void checkout(String refColumn, String refID, int userID) { //checkout book for rent
+    public void checkout(String refColumn,String refID) { //checkout book for rent
         //String rentColumn = "rented";
         //String checkedOut = "1";
-        String updateSQL = "UPDATE book SET rented = 1, user_id = " + userID + " WHERE " + refColumn + " = " + refID;
+        String updateSQL = "UPDATE book SET rented = 1 WHERE " + refColumn + " = " + refID;
 
         try {
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
@@ -89,19 +88,12 @@ public class dbBooks implements dbMethods{
             ex.printStackTrace();
         }
     }
-    public void returnBook(String refColumn, String refID) { //checkout book for rent
-        String updateSQL = "UPDATE book SET rented = 0, user_id = NULL WHERE " + refColumn + " = " + refID;
 
-        try {
-            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
-            int rowsUpdated = updateStatement.executeUpdate();
-            System.out.println("Rows updated: " + rowsUpdated);
-            updateStatement.close();
-        } catch(SQLException ex) {
-            System.out.println("[ERROR] Book return failed.");
-            ex.printStackTrace();
-        }
+    @Override
+    public void isStatAvailable() {
+
     }
+
     @Override
     public void isAvailable(String refColumn,String refID) {    //If there is a specific item user wants to check
         String availabilityCheckSQL = "SELECT * FROM book WHERE " + refColumn + " = " + refID;
@@ -119,7 +111,7 @@ public class dbBooks implements dbMethods{
                 } else {
                     rented = "In Stock";
                 }
-                System.out.println(bookID + ": \"" + name + "\" by " + author + " (" + publication + ") | " + rented);
+                System.out.println(bookID + ": " + name + " | " + author + " | " + publication + " | " + rented);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -142,7 +134,7 @@ public class dbBooks implements dbMethods{
                 } else {
                     rented = "In Stock";
                 }
-                System.out.println(bookID + ": \"" + name + "\" by " + author + " (" + publication + ") | " + rented);
+                System.out.println(bookID + ": " + name + " | " + author + " | " + publication + " | " + rented);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -150,15 +142,10 @@ public class dbBooks implements dbMethods{
     }
 
     @Override
-    public void purchaseItem(String refColumn, String refID) {
+    public void purchaseItem(String refColumn, String refID, int pnum) {
 
     }
 
-
-    @Override
-    public void toRent() {
-
-    }
 
     public void isRented() { //Show all available items
         String availabilityCheckSQL = "SELECT * FROM book WHERE rented = 1";
@@ -176,7 +163,7 @@ public class dbBooks implements dbMethods{
                 } else {
                     rented = "In Stock";
                 }
-                System.out.println(bookID + ": \"" + name + "\" by " + author + " (" + publication + ") | " + rented);
+                System.out.println(bookID + ": " + name + " | " + author + " | " + publication + " | " + rented);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -198,7 +185,7 @@ public class dbBooks implements dbMethods{
                 } else {
                     rented = "In Stock";
                 }
-                System.out.println(bookID + ": \"" + name + "\" by " + author + " (" + publication + ") | " + rented);
+                System.out.println(bookID + ": " + name + " | " + author + " | " + publication + " | " + rented);
             }
         } catch (SQLException e) {
             e.printStackTrace();
