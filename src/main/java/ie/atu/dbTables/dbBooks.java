@@ -77,7 +77,7 @@ public class dbBooks implements dbMethods{
     public void checkout(String refColumn, String refID, int userID) { //checkout book for rent
         //String rentColumn = "rented";
         //String checkedOut = "1";
-        String updateSQL = "UPDATE book SET (rented = 1 && user_id = " + userID + ") WHERE " + refColumn + " = " + refID;
+        String updateSQL = "UPDATE book SET rented = 1, user_id = " + userID + " WHERE " + refColumn + " = " + refID;
 
         try {
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
@@ -90,7 +90,7 @@ public class dbBooks implements dbMethods{
         }
     }
     public void returnBook(String refColumn, String refID) { //checkout book for rent
-        String updateSQL = "UPDATE book SET (rented = 0 && user_id = NULL) WHERE " + refColumn + " = " + refID;
+        String updateSQL = "UPDATE book SET rented = 0, user_id = NULL WHERE " + refColumn + " = " + refID;
 
         try {
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
@@ -98,7 +98,7 @@ public class dbBooks implements dbMethods{
             System.out.println("Rows updated: " + rowsUpdated);
             updateStatement.close();
         } catch(SQLException ex) {
-            System.out.println("[ERROR] Book checkout failed.");
+            System.out.println("[ERROR] Book return failed.");
             ex.printStackTrace();
         }
     }

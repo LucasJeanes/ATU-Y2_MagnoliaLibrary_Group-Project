@@ -34,6 +34,7 @@ public class StationaryTest {
             e.printStackTrace();
         }
     }
+
     @Test
     @Order(2)
     public void testDeleteItem() throws SQLException {
