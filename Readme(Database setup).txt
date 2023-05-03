@@ -1,0 +1,1 @@
+To use the database (MagnoliaLibrary.sql), import it in MySQL Workbench as a self-contained file using "Data Import" in the Server tab. YOu may need to restart WOrkbench for the database to show. It's hosted on Localhost port 3306.
